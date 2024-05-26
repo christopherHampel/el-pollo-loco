@@ -1,6 +1,6 @@
 class Keyboard {
         RIGHT = false;
-        LEFT = 'leftarrow is pressed';
+        LEFT = false;
         UP = false;
         DOWN = false;
         SPACE = false;
