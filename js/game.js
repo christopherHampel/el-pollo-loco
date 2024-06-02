@@ -1,5 +1,4 @@
 let canvas;
-let canvasHeight = 480;
 let world;
 keyboard = new Keyboard();
 
@@ -20,6 +19,8 @@ document.addEventListener("keydown", (e) => {
         keyboard.UP = true;
     } else if(e.key === 'ArrowDown') {
         keyboard.DOWN = true;
+    } else if(e.keyCode == 32) {
+        keyboard.SPACE = true;
     }
 });
 
@@ -33,5 +34,7 @@ document.addEventListener("keyup", (e) => {
         keyboard.UP = false;
     } else if(e.key === 'ArrowDown') {
         keyboard.DOWN = false;
+    } else if(e.keyCode == 32) {
+        keyboard.SPACE = false;
     }
 })

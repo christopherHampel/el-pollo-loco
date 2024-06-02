@@ -8,7 +8,24 @@ class MovableObject {
     currentImage = 0;
     speed = 0.2;
     otherDirection = false;
+    speedY = 0;
+    accelearation = 2;
+    isInAir = false;
 
+    applyGravity() {
+        setInterval( () => {
+            if(this.isAboveGround() || this.speedY > 0) {
+            this.y -= this.speedY;
+            this.speedY -= this.accelearation
+            } else {
+                this.isInAir = false;
+            }
+        }, 1000 / 25)
+    }
+
+    isAboveGround() {
+        return this.y < 220;
+    }
 
     loadImage(path) {
         this.img = new Image(); //--> Kurzform für document.createElement('img'), erstellt neues Bildobjekt
@@ -23,13 +40,30 @@ class MovableObject {
         });
     }
 
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    drawRect(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = '1';
+        ctx.strokeStyle = "green";
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.stroke();
+    }
+
+    playAnimation(images) {
+        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
     moveRight() {
-        console.log('Moving right');
+        this.x += this.speed;
     }
 
     moveLeft() {
-        setInterval(() => {
-            this.x -= this.speed;
-        }, (1000 / 60));
+        this.x -= this.speed;
     }
 }
