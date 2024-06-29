@@ -1,9 +1,83 @@
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+* {
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
 }
 
 canvas {
     background-color: black;
+}
+
+.start-screen-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.start-screen {
+    background-image: url('img/9_intro_outro_screens/start/startscreen_1.png');
+    width: 720px;
+    height: 480px;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.canvas-background {
+    background-image: url('img/9_intro_outro_screens/start/desert-5112222_640.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+#endScreen {
+    background-image: url('img/9_intro_outro_screens/game_over/game over!.png');
+    visibility: hidden;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vs-hidden {
+    visibility: hidden;
+}
+
+.start-button {
+    padding: 24px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(160,34,10);
+    color: white;
+}
+
+.start-button:hover {
+    cursor: pointer;
 }
