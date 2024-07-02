@@ -11,6 +11,34 @@ class Character extends MovableObject {
         left: 25
     };
 
+    idleTime = 0;
+
+    IMAGES_IDLE = [
+        'img/2_character_pepe/1_idle/idle/I-1.png',
+        'img/2_character_pepe/1_idle/idle/I-2.png',
+        'img/2_character_pepe/1_idle/idle/I-3.png',
+        'img/2_character_pepe/1_idle/idle/I-4.png',
+        'img/2_character_pepe/1_idle/idle/I-5.png',
+        'img/2_character_pepe/1_idle/idle/I-6.png',
+        'img/2_character_pepe/1_idle/idle/I-7.png',
+        'img/2_character_pepe/1_idle/idle/I-8.png',
+        'img/2_character_pepe/1_idle/idle/I-9.png',
+        'img/2_character_pepe/1_idle/idle/I-10.png',
+    ];
+
+    IMAGES_LONG_IDLE = [
+        'img/2_character_pepe/1_idle/long_idle/I-11.png',
+        'img/2_character_pepe/1_idle/long_idle/I-12.png',
+        'img/2_character_pepe/1_idle/long_idle/I-13.png',
+        'img/2_character_pepe/1_idle/long_idle/I-14.png',
+        'img/2_character_pepe/1_idle/long_idle/I-15.png',
+        'img/2_character_pepe/1_idle/long_idle/I-16.png',
+        'img/2_character_pepe/1_idle/long_idle/I-17.png',
+        'img/2_character_pepe/1_idle/long_idle/I-18.png',
+        'img/2_character_pepe/1_idle/long_idle/I-19.png',
+        'img/2_character_pepe/1_idle/long_idle/I-20.png',
+    ]
+
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -53,6 +81,8 @@ class Character extends MovableObject {
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_LONG_IDLE);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
@@ -79,25 +109,49 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000/60);
 
-
         setInterval( () => {
             if(this.isDead()){
+                // this.idleTime = 0;
                 this.playAnimation(this.IMAGES_DEAD);
                 // setTimeout( () => {
                 //     this.world.showEndscreen();
                 // }, 500);
             } else if(this.isHurt()) {
+                // this.idleTime = 0;
                 this.playAnimation(this.IMAGES_HURT);
+                // this.setKeyboardFalse();
             } else if(this.isAboveGround()) {
+                // this.idleTime = 0;
                 this.playAnimation(this.IMAGES_JUMPING);
-            } else {
-                if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    //Walk animation
-                    // % Modulo Funktion teilt beide Werte und gibt den Rest immer an, in ganzen zahlen --> 1/6=0, Rest 1; 6/6=0, 7/6=1,Rest 1
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
+            } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                // this.idleTime = 0;
+                this.playAnimation(this.IMAGES_WALKING);
             }
         }, 100);
+
+        setInterval( () => {
+            if(!this.world.keyboard.UP && !this.world.keyboard.DOWN && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE && !this.world.keyboard.D) {
+                this.checkIdleOrLongIdle();
+            }
+        }, 300);
+    }
+
+    checkIdleOrLongIdle() {
+        if(this.timeForIdleCondition()) {
+            this.playAnimation(this.IMAGES_IDLE);
+            this.idleTime += 300;
+        } else {
+            this.playAnimation(this.IMAGES_LONG_IDLE);
+        }
+    }
+
+    timeForIdleCondition() {
+        let lastPressKeyboardTime = this.world.lastTriggerKeyboard();
+        let timepassed = (new Date().getTime() - lastPressKeyboardTime) / 1000;
+        // console.log(lastPressKeyboardTime);
+        // console.log(timepassed);
+        // console.log(timepassed < 15 || lastPressKeyboardTime == 0);
+        return timepassed < 15 || lastPressKeyboardTime == 0;
     }
 
     jump() {

@@ -5,4 +5,13 @@ class Keyboard {
         DOWN = false;
         SPACE = false;
         D = false;
+
+        // constructor() {
+        //         this.returnKeyboardBoolean();
+        // }
+
+        // returnKeyboardBoolean() {
+        //         setInterval( () => {
+        //         }, 100);
+        // }
 }

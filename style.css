@@ -31,7 +31,7 @@ canvas {
     background-size: cover;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 
 .canvas-background {
@@ -80,4 +80,11 @@ canvas {
 
 .start-button:hover {
     cursor: pointer;
+}
+
+.button-start-steering {
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
 }

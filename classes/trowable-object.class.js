@@ -6,6 +6,7 @@ class TrowableObject extends MovableObject {
         this.y = y;
         this.height = 100;
         this.width = 40;
+        this.collidingWithEndboss = false;
 
         this.throw();
     }

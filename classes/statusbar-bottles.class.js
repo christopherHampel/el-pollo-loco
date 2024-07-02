@@ -1,4 +1,5 @@
 class StatusbarBottles extends DrawableObject {
+
     IMAGES_STATUSBAR_BOTTLES = [
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
@@ -12,11 +13,11 @@ class StatusbarBottles extends DrawableObject {
 
     constructor() {
         super().loadImages(this.IMAGES_STATUSBAR_BOTTLES);
-        this.x = 50;
-        this.y = 130;
+        this.x = 550;
+        this.y = 10;
         this.width = 150;
         this.height = 75;
-        this.setPercentage(0);
+        this.setPercentage(5);
     }
 
     setPercentage(collectedBottles){

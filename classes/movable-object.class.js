@@ -55,8 +55,8 @@ class MovableObject extends DrawableObject {
         this.y + this.offset.top < movableObject.y + movableObject.height - movableObject.offset.bottom;
     }
 
-    hit() {
-        this.energy -= 5;
+    hit(deductionOfEnergy) {
+        this.energy -= deductionOfEnergy;
         if(this.energy < 0) {
             this.energy = 0;
         } else {
@@ -70,8 +70,8 @@ class MovableObject extends DrawableObject {
         return timepassed < 1;
     }
 
-    isDead() {
+    isDead(maxEnergy) {
         // console.log(this.energy)
-        return this.energy == 0;
+        return this.energy <= maxEnergy;
     }
 }
