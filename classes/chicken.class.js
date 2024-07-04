@@ -11,8 +11,7 @@ class Chicken extends MovableObject {
         left: 1
     };
 
-    // collisionFromTop = false;
-    // collisionFromSide = false;
+    killed = false;
 
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
@@ -20,7 +19,7 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
     ];
 
-    IMAGE_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png']
+    IMAGE_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
@@ -34,17 +33,13 @@ class Chicken extends MovableObject {
     }
 
     animate() {
-        setInterval( () => {
+        this.intervalMoveLeft = setInterval( () => {
             this.moveLeft(0.2);
         }, 1000 / 60);
         
-        setInterval( () => {
+        this.intervalMovePlayAnimation = setInterval( () => {
             // % Modulo Funktion teilt beide Werte und gibt den Rest immer an, in ganzen zahlen --> 1/6=0, Rest 1; 6/6=0, 7/6=1,Rest 1
             this.playAnimation(this.IMAGES_WALKING);
         }, 200);
-    }
-
-    chickenIsDead() {
-        this.loadImage('img/3_enemies_chicken/chicken_normal/2_dead/dead.png');
     }
 }

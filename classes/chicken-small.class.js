@@ -16,10 +16,14 @@ class SmallChicken extends MovableObject {
         'img/3_enemies_chicken/chicken_small/1_walk/3_w.png',
     ];
 
-    constructor() {
+    IMAGE_DEAD = ['img/3_enemies_chicken/chicken_small/2_dead/dead.png'];
+
+
+    constructor(startXPosition) {
         super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
-        this.x = 200 + Math.random() * 500;
+        // this.x = 200 + Math.random() * 500;
+        this.x = startXPosition;
 
         this.speed = 0.15 + Math.random() * 0.5;
             
@@ -27,11 +31,11 @@ class SmallChicken extends MovableObject {
     }
 
     animate() {
-        setInterval( () => {
-            this.moveLeft(0.2);
+        this.intervalMoveLeft = setInterval( () => {
+            this.moveLeft(1.5);
         }, 1000 / 60);
         
-        setInterval( () => {
+        this.intervalMovePlayAnimation = setInterval( () => {
             // % Modulo Funktion teilt beide Werte und gibt den Rest immer an, in ganzen zahlen --> 1/6=0, Rest 1; 6/6=0, 7/6=1,Rest 1
             this.playAnimation(this.IMAGES_WALKING);
         }, 200);

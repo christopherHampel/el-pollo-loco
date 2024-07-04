@@ -6,7 +6,6 @@ class MovableObject extends DrawableObject {
         right: 0,
         left: 0
     };
-    // speed = 0.2;
     otherDirection = false;
     speedY = 0;
     accelearation = 2;
@@ -71,7 +70,12 @@ class MovableObject extends DrawableObject {
     }
 
     isDead(maxEnergy) {
-        // console.log(this.energy)
         return this.energy <= maxEnergy;
+    }
+
+    chickenIsDead() {
+        clearInterval(this.intervalMoveLeft);
+        clearInterval(this.intervalMovePlayAnimation);
+        this.loadImage(this.IMAGE_DEAD);
     }
 }

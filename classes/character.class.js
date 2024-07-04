@@ -6,10 +6,12 @@ class Character extends MovableObject {
     speed = 5;
     offset = {
         top: 90,
-        bottom: 20,
+        bottom: 10,
         right: 25,
-        left: 25
+        left: 25,
     };
+
+    notInjured = false;
 
     idleTime = 0;
 
@@ -110,21 +112,14 @@ class Character extends MovableObject {
         }, 1000/60);
 
         setInterval( () => {
-            if(this.isDead()){
-                // this.idleTime = 0;
+            if(this.isDead(0)){
                 this.playAnimation(this.IMAGES_DEAD);
-                // setTimeout( () => {
-                //     this.world.showEndscreen();
-                // }, 500);
-            } else if(this.isHurt()) {
-                // this.idleTime = 0;
+                // this.gameOverScreen();
+            } else if(this.isHurt() && !this.notInjured) {
                 this.playAnimation(this.IMAGES_HURT);
-                // this.setKeyboardFalse();
             } else if(this.isAboveGround()) {
-                // this.idleTime = 0;
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                // this.idleTime = 0;
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 100);
@@ -148,9 +143,6 @@ class Character extends MovableObject {
     timeForIdleCondition() {
         let lastPressKeyboardTime = this.world.lastTriggerKeyboard();
         let timepassed = (new Date().getTime() - lastPressKeyboardTime) / 1000;
-        // console.log(lastPressKeyboardTime);
-        // console.log(timepassed);
-        // console.log(timepassed < 15 || lastPressKeyboardTime == 0);
         return timepassed < 15 || lastPressKeyboardTime == 0;
     }
 
@@ -158,4 +150,10 @@ class Character extends MovableObject {
         this.speedY = 22;
         this.isInAir = true;
     }
+
+    // gameOverScreen() {
+    //     setTimeout( () => {
+    //         this.world.showEndscreen();
+    //     }, 500);
+    // }
 }
