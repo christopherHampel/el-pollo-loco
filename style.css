@@ -48,24 +48,6 @@ canvas {
     z-index: 5;
 }
 
-#endScreen {
-    background-image: url('img/9_intro_outro_screens/game_over/game over!.png');
-    visibility: hidden;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .vs-hidden {
     visibility: hidden;
 }
@@ -88,3 +70,60 @@ canvas {
     justify-content: space-around;
     width: 100%;
 }
+
+.background-endscreen {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    z-index: 9;
+}
+
+.endscreen {
+    width: 720px;
+    height: 480px;
+    background-image: url('img/9_intro_outro_screens/game_over/game over!.png');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 10;
+}
+
+.div-for-restart-button {
+    height: 50%;
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+
+
+
+/* #endScreen {
+    background-image: url('img/9_intro_outro_screens/game_over/game over!.png');
+    visibility: hidden;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */

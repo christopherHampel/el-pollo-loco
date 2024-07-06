@@ -67,12 +67,11 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_ATTACK);
         this.active = false;
-        this.x = 1000;
+        this.x = 2000;
         this.animate();
     }
 
     animate() {
-
         setInterval( () => {
             if(this.active) {
                 if(this.counterForPlayAnimation < this.runsAlertArray) {

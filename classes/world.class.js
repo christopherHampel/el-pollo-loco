@@ -1,5 +1,5 @@
 class World {
-    stopRequestAnimationFrame = false;
+    // stopRequestAnimationFrame = false;
     startNewCloudX = 200;
     character = new Character();
     statusbarHealth = new StatusbarHealth();
@@ -11,6 +11,7 @@ class World {
     canvas;
     keyboard;
     camera_x = 0;
+    gameOver = false;
     throwableObjects = [new TrowableObject()];
 
     constructor(canvas, keyboard) {
@@ -61,16 +62,13 @@ class World {
     }
 
     killChickenFromTop() {
-            for (let i = 1; i < this.level.enemies.length; i++) {
-                let enemy = this.level.enemies[i];
-                if(this.character.isColliding(enemy) && this.character.isAboveGround()) {
-                    this.character.notInjured = true;
-                    enemy.chickenIsDead();
-                    setTimeout(() => this.deleteKilledChicken(enemy), 250);
-                    setTimeout(() => {
-                        this.character.notInjured = false;
-                    }, 1500);
-                }
+        for (let i = 1; i < this.level.enemies.length; i++) {
+            let enemy = this.level.enemies[i];
+            if(this.character.isColliding(enemy) && !enemy.killed && this.character.isAboveGround()) {
+                enemy.killed = true;
+                enemy.chickenIsDead();
+                setTimeout(() => this.deleteKilledChicken(enemy), 250);
+            }
         }
     }
 
@@ -81,8 +79,7 @@ class World {
 
     checkCollisionsEnemies() {
         this.level.enemies.forEach( (enemy) => {
-            // let indexKilledChicken = this.level.enemies.indexOf(enemy);
-            if(this.character.isColliding(enemy)){
+            if(this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.killed){
                 this.character.hit(5);
                 this.statusbarHealth.setPercentage(this.character.energy);
             }
@@ -125,9 +122,8 @@ class World {
             this.statusbarCoins.setPercentage(this.statusbarCoins.collectedCoins);
         } else if(isBottle) {
             this.statusbarCoins.collectedCoins--;
-            this.statusbarCoins.setPercentage(this.statusbarCoins.collectedCoins);
-        } else {
             this.statusbarBottles.collectedBottles++;
+            this.statusbarCoins.setPercentage(this.statusbarCoins.collectedCoins);
             this.statusbarBottles.setPercentage(this.statusbarBottles.collectedBottles);
         }
     }
@@ -140,7 +136,7 @@ class World {
     }
 
     throwBottle() {
-        let bottle = new TrowableObject(this.character.x + this.character.offset.right, this.character.y + 50);
+        let bottle = new TrowableObject(this.character.x + this.character.offset.right, this.character.y + 50, this.character.otherDirection);
         this.throwableObjects.push(bottle);
     }
 
@@ -177,27 +173,32 @@ class World {
         this.clearRectCanvas();
 
         this.ctx.translate(this.camera_x, 0);
+        
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.cloud);
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.coins);
-        this.addObjectsToMap(this.level.bottles);
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.throwableObjects);
+
+        if(!this.gameOver) {
+            this.addObjectsToMap(this.level.enemies);
+            this.addObjectsToMap(this.level.coins);
+            this.addObjectsToMap(this.level.bottles);
+            this.addToMap(this.character);
+            this.addObjectsToMap(this.throwableObjects);
+        }
+        
         this.ctx.translate(-this.camera_x, 0);
 
-        this.addToMap(this.statusbarHealth);
-        this.addToMap(this.statusbarCoins);
-        this.addToMap(this.statusbarBottles);
-        this.addToMap(this.statusbarEndboss);
+        if(!this.gameOver) {
+            this.addToMap(this.statusbarHealth);
+            this.addToMap(this.statusbarCoins);
+            this.addToMap(this.statusbarBottles);
+            this.addToMap(this.statusbarEndboss);
+        }
 
-        if(!this.stopRequestAnimationFrame){
         // hiermit wird draw() immer wieder aufgerufen
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
          });
-        }
     }
 
     addObjectsToMap(objects) {
@@ -236,7 +237,20 @@ class World {
     }
 
     showEndscreen() {
-        this.stopRequestAnimationFrame = true;
-        document.getElementById('endScreen').style.visibility = 'visible';
+        let endScreenBackground = document.getElementById('screenBackground');
+        endScreenBackground.innerHTML = '';
+        endScreenBackground.innerHTML = `
+            <h1 class="vs-hidden">placeholder</h1>
+            <div class="endscreen">
+                <div class="div-for-restart-button">
+                    <button onclick="restartGame()" class="start-button">Restart Game</button>
+                </div>
+            </div>`
+            this.gameOver = true;
+            this.clearAllIntervals();
+    }
+
+    clearAllIntervals() {
+        for (let i = 1; i < 9999; i++) window.clearInterval(i);
     }
 }

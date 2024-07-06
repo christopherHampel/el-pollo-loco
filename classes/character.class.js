@@ -114,7 +114,10 @@ class Character extends MovableObject {
         setInterval( () => {
             if(this.isDead(0)){
                 this.playAnimation(this.IMAGES_DEAD);
-                // this.gameOverScreen();
+                setTimeout( () => {
+                    this.world.showEndscreen();
+                    this.applyGravity();
+                }, 1000);
             } else if(this.isHurt() && !this.notInjured) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if(this.isAboveGround()) {
@@ -150,10 +153,4 @@ class Character extends MovableObject {
         this.speedY = 22;
         this.isInAir = true;
     }
-
-    // gameOverScreen() {
-    //     setTimeout( () => {
-    //         this.world.showEndscreen();
-    //     }, 500);
-    // }
 }

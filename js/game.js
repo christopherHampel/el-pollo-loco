@@ -12,8 +12,8 @@ function init() {
 }
 
 function hideStartScreen() {
-    let startScreenBackground = document.getElementById('startScreenBackground');
-    startScreenBackground.innerHTML = ''
+    let startScreenBackground = document.getElementById('screenBackground');
+    startScreenBackground.innerHTML = '';
 }
 
 document.addEventListener("keydown", (e) => {
@@ -53,8 +53,20 @@ document.addEventListener("keyup", (e) => {
     }
 });
 
-// function restartGame() {
-//     document.getElementById('endScreen').style.visibility = 'hidden';
-//     world.clearRectCanvas();
-//     world = new World(canvas, keyboard);
-// }
+function showStartscreen() {
+    let startScreenBackground = document.getElementById('screenBackground');
+    startScreenBackground.innerHTML = '';
+    startScreenBackground.innerHTML = `
+    <h1 class="vs-hidden">placeholder</h1>
+        <div class="start-screen">
+            <div class="button-start-steering">
+                <button class="start-button" onclick="init()">Start Game</button>
+                <button class="start-button">How it works?</button>
+            </div>
+        </div>`
+}
+
+function restartGame() {
+    world.gameOver = false;
+    init();
+}
