@@ -1,5 +1,4 @@
 class World {
-    // stopRequestAnimationFrame = false;
     startNewCloudX = 200;
     character = new Character();
     statusbarHealth = new StatusbarHealth();
@@ -7,6 +6,7 @@ class World {
     statusbarBottles = new StatusbarBottles();
     statusbarEndboss = new StatusbarEndboss();
     level = level1;
+    endboss = this.level.enemies[0];
     ctx;
     canvas;
     keyboard;
@@ -27,6 +27,7 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        this.endboss.world = this;
     }
 
     run() {
@@ -91,7 +92,7 @@ class World {
             if(this.startNewCloudX < 5000) {
                 let newCloud = new Cloud(this.startNewCloudX);
                 this.level.cloud.push(newCloud);
-                this.startNewCloudX += 250;
+                this.startNewCloudX += 500;
             }
         }, 1000);
     }
@@ -173,7 +174,7 @@ class World {
         this.clearRectCanvas();
 
         this.ctx.translate(this.camera_x, 0);
-        
+
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.cloud);
 
@@ -190,7 +191,7 @@ class World {
         if(!this.gameOver) {
             this.addToMap(this.statusbarHealth);
             this.addToMap(this.statusbarCoins);
-            this.addToMap(this.statusbarBottles);
+            this.addToMap(this.statusbarBottles); 
             this.addToMap(this.statusbarEndboss);
         }
 
@@ -225,7 +226,6 @@ class World {
         this.ctx.translate(movableObject.x + movableObject.width, movableObject.y);
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(movableObject.img, 0, 0, movableObject.width, movableObject.height);
-        // movableObject.draw(this.ctx);
     }
 
     flipImageBack(movableObject) {
@@ -237,20 +237,39 @@ class World {
     }
 
     showEndscreen() {
-        let endScreenBackground = document.getElementById('screenBackground');
-        endScreenBackground.innerHTML = '';
-        endScreenBackground.innerHTML = `
-            <h1 class="vs-hidden">placeholder</h1>
-            <div class="endscreen">
-                <div class="div-for-restart-button">
-                    <button onclick="restartGame()" class="start-button">Restart Game</button>
-                </div>
-            </div>`
-            this.gameOver = true;
-            this.clearAllIntervals();
+        debugger;
+        let endScreenBackground = document.getElementById('winAndGameoverScreen');
+        let endscreen = document.getElementById('winOrGameover');
+
+        this.gameOver = true;
+        this.clearAllIntervals();
+
+        endScreenBackground.classList.remove('vs-hidden');
+
+        if(this.character.energy > 0) {
+            endscreen.classList.add('win');
+        } else {
+            endscreen.classList.add('game-over');
+        }
     }
 
     clearAllIntervals() {
         for (let i = 1; i < 9999; i++) window.clearInterval(i);
     }
 }
+
+
+
+        // let endScreenBackground = document.getElementById('screenBackground');
+        // endScreenBackground.innerHTML = '';
+        // endScreenBackground.innerHTML = this.returnHtmlEndscreen();
+    // returnHtmlEndscreen() {
+    //     return `
+    //         <h1>El Pollo Loco</h1>
+    //         <div class="endscreen">
+    //         <canvas id="canvas" width="720" height="480" id="canvas"></canvas>
+    //             <div class="div-for-restart-button">
+    //                 <button onclick="restartGame()" class="start-button">Restart Game</button>
+    //             </div>
+    //         </div>`
+    // }

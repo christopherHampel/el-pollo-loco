@@ -42,9 +42,9 @@ canvas {
     flex-direction: column;
     gap: 40px;
     height: 100vh;
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
     z-index: 5;
 }
 
@@ -71,59 +71,51 @@ canvas {
     width: 100%;
 }
 
-.background-endscreen {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    z-index: 9;
-}
-
-.endscreen {
-    width: 720px;
-    height: 480px;
-    background-image: url('img/9_intro_outro_screens/game_over/game over!.png');
-    background-position: center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    z-index: 10;
-}
-
 .div-for-restart-button {
     height: 50%;
     display: flex;
     align-items: center;
 }
 
+.icons {
+    width: 24px;
+    z-index: 10;
+    position: relative;
+}
 
+#fullscreen {
+    background-color: white;
+}
 
-
-
-
-
-/* #endScreen {
-    background-image: url('img/9_intro_outro_screens/game_over/game over!.png');
-    visibility: hidden;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: 1000;
+.end-screen {
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
-    height: 100vh;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex;
+    flex-direction: column;
+    gap: 40px;
     justify-content: center;
     align-items: center;
-} */
+}
+
+.game-over {
+    width: 720px;
+    height: 480px;
+    background-image: url('img/9_intro_outro_screens/game_over/game over!.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.win {
+    width: 720px;
+    height: 480px;
+    background-image: url('img/9_intro_outro_screens/win/win_2.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

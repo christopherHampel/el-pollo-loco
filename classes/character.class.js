@@ -11,7 +11,7 @@ class Character extends MovableObject {
         left: 25,
     };
 
-    notInjured = false;
+    currentHurt = false;
 
     idleTime = 0;
 
@@ -94,17 +94,17 @@ class Character extends MovableObject {
 
     animate() {
         setInterval(() => {
-            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.currentHurt) {
                 this.moveRight();
                 this.otherDirection = false;
             }
 
-            if(this.world.keyboard.LEFT && this.x > 0) {
+            if(this.world.keyboard.LEFT && this.x > 0 && !this.currentHurt) {
                 this.moveLeft(5);
                 this.otherDirection = true;
             }
 
-            if(this.world.keyboard.SPACE && !this.isInAir){
+            if(this.world.keyboard.SPACE && !this.isInAir && !this.currentHurt){
                 this.jump();
             }
 
@@ -118,8 +118,12 @@ class Character extends MovableObject {
                     this.world.showEndscreen();
                     this.applyGravity();
                 }, 1000);
-            } else if(this.isHurt() && !this.notInjured) {
+            } else if(this.isHurt()) {
+                this.currentHurt = true;
                 this.playAnimation(this.IMAGES_HURT);
+                setTimeout( () => {
+                    this.currentHurt = false;
+                }, 1000);
             } else if(this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {

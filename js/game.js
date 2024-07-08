@@ -4,16 +4,19 @@ let lastPressKeyboard = 0;
 keyboard = new Keyboard();
 
 function init() {
-    hideStartScreen();
+    createCanvas();
     initLevel();
 
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
 
-function hideStartScreen() {
+function createCanvas() {
     let startScreenBackground = document.getElementById('screenBackground');
     startScreenBackground.innerHTML = '';
+    startScreenBackground.innerHTML = `
+        <h1>El Pollo loco</h1>
+        <canvas id="canvas" width="720" height="480" id="canvas"></canvas>`
 }
 
 document.addEventListener("keydown", (e) => {
@@ -31,8 +34,7 @@ document.addEventListener("keydown", (e) => {
     } else if(e.key === 'd') {
         keyboard.D = true;
     }
-    // console.log(e);
-    // console.log(keyboard.LEFT);
+
     lastPressKeyboard = new Date().getTime();
 });
 
@@ -57,16 +59,30 @@ function showStartscreen() {
     let startScreenBackground = document.getElementById('screenBackground');
     startScreenBackground.innerHTML = '';
     startScreenBackground.innerHTML = `
-    <h1 class="vs-hidden">placeholder</h1>
+    <h1>El Pollo Loco</h1>
         <div class="start-screen">
             <div class="button-start-steering">
                 <button class="start-button" onclick="init()">Start Game</button>
-                <button class="start-button">How it works?</button>
+                <button class="start-button">Settings</button>
             </div>
         </div>`
 }
 
 function restartGame() {
+    let endScreenBackground = document.getElementById('winAndGameoverScreen');
+    endScreenBackground.classList.add('vs-hidden');
     world.gameOver = false;
     init();
 }
+
+function openFullscreen() {
+    let elem = document.getElementById('canvasBackground');
+
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  }

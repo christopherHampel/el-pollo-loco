@@ -31,29 +31,18 @@
 
 <body onload="showStartscreen()">
 
-    <div id="screenBackground" class="start-screen-background">
-        <!-- <h1 class="vs-hidden">placeholder</h1>
-        <div class="start-screen">
-            <div class="button-start-steering">
-                <button class="start-button" onclick="init()">Start Game</button>
-                <button class="start-button">How it works?</button>
-            </div>
-        </div> -->
-    </div>
-    
-    <div id="canvasBackground" class="canvas-background">
-        <h1>El Pollo loco</h1>
-        <canvas id="canvas" width="720" height="480" id="canvas"></canvas>
-    </div>
-
-    <!-- <div class="background-endscreen vs-hidden" id="backgroundEndscreen">
+    <div id="winAndGameoverScreen" class="end-screen vs-hidden">
         <h1 class="vs-hidden">placeholder</h1>
-        <div class="endscreen">
-            <div class="div-for-restart-button">
-                <button class="start-button">Restart Game</button>
+        <div id="winOrGameover">
+            <div class="button-end-steering">
+                <button class="start-button" onclick="restartGame()">Restart Game</button>
             </div>
         </div>
-    </div> -->
+    </div>
+
+    <div id="screenBackground" class="start-screen-background"></div>
+    
+    <div id="canvasBackground" class="canvas-background"></div>
 
 </body>
 </html>
