@@ -248,7 +248,6 @@ class World {
     }
 
     showEndscreen() {
-        debugger;
         let endScreenBackground = document.getElementById('winAndGameoverScreen');
         let endscreen = document.getElementById('winOrGameover');
 
@@ -268,19 +267,3 @@ class World {
         for (let i = 1; i < 9999; i++) window.clearInterval(i);
     }
 }
-
-
-
-        // let endScreenBackground = document.getElementById('screenBackground');
-        // endScreenBackground.innerHTML = '';
-        // endScreenBackground.innerHTML = this.returnHtmlEndscreen();
-    // returnHtmlEndscreen() {
-    //     return `
-    //         <h1>El Pollo Loco</h1>
-    //         <div class="endscreen">
-    //         <canvas id="canvas" width="720" height="480" id="canvas"></canvas>
-    //             <div class="div-for-restart-button">
-    //                 <button onclick="restartGame()" class="start-button">Restart Game</button>
-    //             </div>
-    //         </div>`
-    // }

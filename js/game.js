@@ -15,7 +15,6 @@ function createCanvas() {
     let startScreenBackground = document.getElementById('screenBackground');
     startScreenBackground.innerHTML = '';
     startScreenBackground.innerHTML = `
-        <h1>El Pollo loco</h1>
         <canvas id="canvas" width="720" height="480" id="canvas"></canvas>`
 }
 
@@ -59,11 +58,11 @@ function showStartscreen() {
     let startScreenBackground = document.getElementById('screenBackground');
     startScreenBackground.innerHTML = '';
     startScreenBackground.innerHTML = `
-    <h1>El Pollo Loco</h1>
         <div class="start-screen">
             <div class="button-start-steering">
                 <button class="start-button" onclick="init()">Start Game</button>
-                <button class="start-button">Settings</button>
+                <button class="start-button" onclick="showSettings()">Settings</button>
+                <button class="start-button" onclick="showImprint()">Impressum</button>
             </div>
         </div>`
 }
@@ -86,3 +85,23 @@ function openFullscreen() {
       elem.msRequestFullscreen();
     }
   }
+
+function showSettings() {
+    let overlaySettings = document.getElementById('canvasBackground');
+
+    overlaySettings.innerHTML = `
+    <div id="settings" class="settings">
+        <div onclick="closeSettings()">X</div>
+        <div class="d-flex-center-column">
+            <div class="d-flex-center"><img class="setting-icons" src="img/settings/left-arrow-button-icon.png"><span>Move left</span></div>
+            <div class="d-flex-center"><img class="setting-icons" src="img/settings/left-arrow-button-icon.png"><span>Move left</span></div>
+            <div class="d-flex-center"><img class="setting-icons" src="img/settings/left-arrow-button-icon.png"><span>Move left</span></div>
+            <div class="d-flex-center"><img class="setting-icons" src="img/settings/left-arrow-button-icon.png"><span>Move left</span></div>
+        </div>
+    </div>`
+}
+
+function closeSettings() {
+    let overlaySettings = document.getElementById('canvasBackground');
+    overlaySettings.innerHTML = '';
+}

@@ -3,7 +3,11 @@
 }
 
 h1 {
-    text-align: center;
+    /* text-align: center; */
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 15%;
 }
 
 canvas {
@@ -42,9 +46,6 @@ canvas {
     flex-direction: column;
     gap: 40px;
     height: 100vh;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
     z-index: 5;
 }
 
@@ -96,8 +97,8 @@ canvas {
     z-index: 100;
     background-color: rgba(0, 0, 0, 0.3);
     display: flex;
-    flex-direction: column;
-    gap: 40px;
+    /* flex-direction: column;
+    gap: 40px; */
     justify-content: center;
     align-items: center;
 }
@@ -118,4 +119,35 @@ canvas {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.settings {
+    background-color: white;
+    width: 750px;
+    height: 550px;
+    z-index: 150;
+    background-image: url('img/5_background/complete_background.png');
+    background-position: center;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.d-flex-center-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.d-flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+
+}
+
+.setting-icons {
+    width: 80px;
 }
