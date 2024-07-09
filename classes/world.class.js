@@ -13,6 +13,7 @@ class World {
     camera_x = 0;
     gameOver = false;
     throwableObjects = [new TrowableObject()];
+    lastThrowTime = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -131,8 +132,18 @@ class World {
  
     checkThrowObjects() {
         if(this.keyboard.D && this.statusbarBottles.collectedBottles > 0) {
+            this.checkThrowBreak();
+        }
+    }
+
+    checkThrowBreak() {
+        let now = Date.now();
+        let throwBreak = 1000; // 500 ms Cooldown
+
+        if (now - this.lastThrowTime >= throwBreak) {
             this.throwBottle();
             this.reduceCollectedBottles();
+            this.lastThrowTime = now;
         }
     }
 
