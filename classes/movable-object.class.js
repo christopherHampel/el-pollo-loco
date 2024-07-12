@@ -13,11 +13,19 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
 
+    hurtSound = new Audio('audio/hurt.mp3');
+    throwBottleSound = new Audio('audio/throw-bottle.mp3');
+    throwBottleSoundAlternative = new Audio('audio/throw-alternative.mp3');
+    runSound = new Audio('audio/run.mp3');
+    gameoverSound = new Audio('audio/gameover.mp3');
+    jumpSound = new Audio('audio/jump.mp3');
+    kikerikiSound = new Audio('audio/kikeriki.mp3');
+
     applyGravity() {
         setInterval( () => {
             if(this.isAboveGround() || this.speedY > 0 || this.energy == 0 || this instanceof Endboss) {
-            this.y -= this.speedY;
-            this.speedY -= this.accelearation;
+                this.y -= this.speedY;
+                this.speedY -= this.accelearation;
             } else {
                 this.isInAir = false;
             }
@@ -56,6 +64,9 @@ class MovableObject extends DrawableObject {
 
     hit(deductionOfEnergy) {
         this.energy -= deductionOfEnergy;
+        if(this instanceof Character) {
+            this.hurtSound.play();
+        }
         if(this.energy < 0) {
             this.energy = 0;
         } else {

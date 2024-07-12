@@ -51,6 +51,7 @@ class World {
     
             if(differencePositions <= 720){
                 this.level.enemies[0].active = true;
+                this.level.enemies[0].kikerikiSound.play();
                 clearInterval(intervalIsEndbossVisible);
                 this.addNewSmallChicken();
             }
@@ -150,6 +151,7 @@ class World {
     throwBottle() {
         let bottle = new TrowableObject(this.character.x + this.character.offset.right, this.character.y + 50, this.character.otherDirection);
         this.throwableObjects.push(bottle);
+        this.character.throwBottleSoundAlternative.play();
     }
 
     reduceCollectedBottles() {

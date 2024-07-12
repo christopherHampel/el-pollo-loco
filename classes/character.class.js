@@ -94,18 +94,27 @@ class Character extends MovableObject {
 
     animate() {
         setInterval(() => {
+            // this.runSound.pause();
+
             if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.currentHurt) {
                 this.moveRight();
                 this.otherDirection = false;
+                if(!this.isInAir) {
+                    this.runSound.play();
+                }
             }
 
             if(this.world.keyboard.LEFT && this.x > 0 && !this.currentHurt) {
                 this.moveLeft(5);
                 this.otherDirection = true;
+                if(!this.isInAir) {
+                    this.runSound.play();
+                }
             }
 
-            if(this.world.keyboard.SPACE && !this.isInAir && !this.currentHurt){
+            if(this.world.keyboard.SPACE && !this.isAboveGround() && !this.currentHurt){
                 this.jump();
+                this.jumpSound.play();
             }
 
             this.world.camera_x = -this.x + 100;
@@ -117,6 +126,7 @@ class Character extends MovableObject {
                 setTimeout( () => {
                     this.world.showEndscreen();
                     this.applyGravity();
+                    this.gameoverSound.play();
                 }, 1000);
             } else if(this.isHurt()) {
                 this.currentHurt = true;
