@@ -69,7 +69,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_ATTACK);
         this.active = false;
-        this.x = 2000;
+        this.x = 2500;
         this.animate();
     }
 
@@ -111,11 +111,4 @@ class Endboss extends MovableObject {
             } 
         }, 200);
     }
-
-
-
-            // setInterval( () => {
-        //     // % Modulo Funktion teilt beide Werte und gibt den Rest immer an, in ganzen zahlen --> 1/6=0, Rest 1; 6/6=0, 7/6=1,Rest 1
-        //     this.playAnimation(this.IMAGES_WALKING);
-        // }, 200);
 }

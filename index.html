@@ -7,7 +7,8 @@
 
     <link rel="shortcut icon" href="img/icons/favicon.png" type="image/x-icon">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/fonts.css">
 
     <script src="classes/drawable-object.class.js"></script>
     <script src="classes/movable-object.class.js"></script>
@@ -29,27 +30,36 @@
     <script src="classes/trowable-object.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/steering-keyboard.js"></script>
+    <script src="js/steering-mobile.js"></script>
+    <script src="js/html-templates.js"></script>
+    <script src="js/imprint.js"></script>
 </head>
 
 <body onload="showStartscreen()">
 
-    <h1>El Pollo Loco</h1>
+    <span class="headline">El Pollo Loco</span>
 
-    <div id="winAndGameoverScreen" class="end-screen vs-hidden">
-        <div id="winOrGameover">
-            <div class="button-end-steering">
-                <button class="start-button" onclick="showStartscreen()">Back to menu</button>
+    <div id="canvasOverlay" class="position-fixed flex-center-center z-index-10"></div>
+    
+    <div id="canvasBackground" class="canvas-background d-flex-center position-fixed">
+        <canvas id="canvas" width="720" height="480" id="canvas"></canvas>
+    </div>
+
+    <div id="mobileSteeringBackground" class="position-fixed flex-center-center visibility-hidden z-index-15">
+        <div class="mobile-steering">
+            <div class="touch-panels">
+                <div id="moveLeft" class="mobile-button">left</div>
+                <div id="moveRight" class="mobile-button">right</div>
+            </div>
+            <div class="touch-panels">
+                <div id="jump" class="mobile-button">jump</div>
+                <div id="throw" class="mobile-button">throw</div>
             </div>
         </div>
     </div>
 
-    <div id="screenBackground" class="start-screen-background"></div>
-    
-    <div id="canvasBackground" class="canvas-background d-flex-center"></div>
-
-    <!-- <div id="mobileSettings" class="mobile">
-        <div>test</div>
-    </div> -->
+    <div id="backgroundForGeneral" class="position-fixed flex-center-center visibility-hidden z-index-30"></div>
 
 </body>
 </html>

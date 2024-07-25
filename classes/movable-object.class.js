@@ -14,8 +14,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
 
     hurtSound = new Audio('audio/hurt.mp3');
-    throwBottleSound = new Audio('audio/throw-bottle.mp3');
-    throwBottleSoundAlternative = new Audio('audio/throw-alternative.mp3');
+    throwBottleSound = new Audio('audio/throw-alternative.mp3');
     runSound = new Audio('audio/run.mp3');
     gameoverSound = new Audio('audio/gameover.mp3');
     jumpSound = new Audio('audio/jump.mp3');
@@ -34,7 +33,7 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if(this instanceof TrowableObject) {
-            return true;
+            return this.y < 350;
         } else {
             return this.y < 220;
         }
@@ -62,10 +61,15 @@ class MovableObject extends DrawableObject {
         this.y + this.offset.top < movableObject.y + movableObject.height - movableObject.offset.bottom;
     }
 
+    jump() {
+        this.speedY = 22;
+        this.isInAir = true;
+    }
+
     hit(deductionOfEnergy) {
         this.energy -= deductionOfEnergy;
         if(this instanceof Character) {
-            this.hurtSound.play();
+            // this.hurtSound.play();
         }
         if(this.energy < 0) {
             this.energy = 0;
