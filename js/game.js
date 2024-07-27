@@ -4,7 +4,7 @@ let canvas;
 let world;
 let lastPressKeyboard;
 keyboard = new Keyboard();
-let welcomeSound = new Audio('audio/mariachi.mp3');
+// let welcomeSound = new Audio('audio/mariachi.mp3');
 
 function init() {
     lastPressKeyboard = new Date().getTime();
@@ -33,6 +33,10 @@ function showStartscreen() {
     mobileSteeringBackground.classList.add('visibility-hidden');
     canvas.classList.add('visibility-hidden');
 
+    checkLandscapeModus(canvasOverlay);
+}
+
+function checkLandscapeModus(canvasOverlay) {
     if (window.innerHeight > window.innerWidth) {
         canvasOverlay.innerHTML = htmlTurnYourDevice();
     } else {
@@ -47,7 +51,7 @@ function showStartscreen() {
 }
 
 function openFullscreen() {
-    let elem = document.getElementById('canvasBackground');
+    let elem = document.getElementById('startScreen');
 
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
@@ -68,4 +72,8 @@ function closeHelp() {
     let overlaySettings = document.getElementById('backgroundForGeneral');
     overlaySettings.innerHTML = '';
     overlaySettings.classList.add('visibility-hidden');
+}
+
+function notClosePopup(event) {
+    event.stopPropagation();
 }

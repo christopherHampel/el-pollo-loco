@@ -1,8 +1,9 @@
 function returnImprintAndPrivacyPolice() {
     return `
+    <div class="scrollbar-div" onclick="notClosePopup(event)">
     <div id="settings" class="settings additionally-imprint">
-    <div class="container-for-close-button" onclick="closeHelp()">
-        <span class="font-size-32">Steering</span>
+    <div class="container-for-close-button flex-start" onclick="closeHelp()">
+        <span class="font-size-32">Imprint & Legal notice</span>
         <img class="close-icon" src="img/settings/close-round-line-icon.png">
     </div>
     <div>
@@ -11,7 +12,8 @@ function returnImprintAndPrivacyPolice() {
         <p>Christopher Hampel<br/>
         An der Waldesruh 14a<br/>
         36039 Fulda</p>
-
+        <br>
+        <br>
         <h2>Kontakt</h2>
         <p>Telefon: 01234567890<br />
         E-Mail: christopher.hampel@yahoo.de</p>
@@ -20,6 +22,7 @@ function returnImprintAndPrivacyPolice() {
     </div>
     <div>
         <h2>Datenschutz&shy;erkl&auml;rung</h2>
+        <br>
         <h2>1. Datenschutz auf einen Blick</h2>
         <h3>Allgemeine Hinweise</h3> <p>Die folgenden Hinweise geben einen einfachen &Uuml;berblick dar&uuml;ber,
         was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind
@@ -179,5 +182,6 @@ function returnImprintAndPrivacyPolice() {
         vor.</p>
         <p>Quelle: <a href="https://www.e-recht24.de">https://www.e-recht24.de</a></p>
         </div>
+    </div>
     </div>`
 }

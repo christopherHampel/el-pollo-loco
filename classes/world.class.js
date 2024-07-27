@@ -12,7 +12,7 @@ class World {
     keyboard;
     camera_x = 0;
     gameOver = false;
-    throwableObjects = [];
+    throwableObjects = [new TrowableObject()];
     lastThrowTime = 0;
 
     constructor(canvas, keyboard) {
@@ -29,6 +29,7 @@ class World {
     setWorld() {
         this.character.world = this;
         this.endboss.world = this;
+        this.throwableObjects.forEach(obj => obj.world = this);
     }
 
     run() {
@@ -37,7 +38,6 @@ class World {
             this.collectCoinsOrBottles();
             this.checkThrowObjects(); 
             this.lastTriggerKeyboard();
-            // console.log(this.throwableObjects.length);
         }, 100);
     }
 
@@ -157,8 +157,8 @@ class World {
     throwBottle() {
         let bottle = new TrowableObject(this.character.x + this.character.offset.right, this.character.y + 50, this.character.otherDirection);
         this.throwableObjects.push(bottle);
-        // this.throwableObjects.forEach(obj => obj.world = this);
         bottle.world = this;
+        // console.log(this.throwableObjects);
         this.character.throwBottleSound.play();
     }
 
@@ -174,14 +174,21 @@ class World {
     }
 
     checkCollidingBottleWithEndboss() {
-        let currentBottle = this.throwableObjects[this.throwableObjects.length - 1];
-        let endboss = this.level.enemies[0];
+        if(this.throwableObjects.length > 0) {
+            let currentBottle = this.throwableObjects[0];
+            let endboss = this.level.enemies[0];
 
-        if(currentBottle.isColliding(endboss) && !currentBottle.collidingWithEndboss) {
-            this.level.enemies[0].hit(19);
-            this.statusbarEndboss.setPercentage(this.level.enemies[0].energy);
-            this.throwableObjects[this.throwableObjects.length - 1].collidingWithEndboss = true;
+            if(currentBottle.isColliding(endboss) && !currentBottle.collidingWithEndboss) {
+                currentBottle.splashBottle();
+                this.damageEndboss();
+            }
         }
+    }
+
+    damageEndboss() {
+        this.level.enemies[0].hit(19);
+        this.statusbarEndboss.setPercentage(this.level.enemies[0].energy);
+        this.throwableObjects[this.throwableObjects.length - 1].collidingWithEndboss = true;
     }
 
     addNewSmallChicken() {
@@ -280,11 +287,7 @@ class World {
         canvasOverlay.classList.remove('vs-hidden');
         mobileSteeringBackground.classList.add('visibility-hidden');
 
-        if(this.isCharacterDead()) {
-            canvasOverlay.innerHTML = htmlWinScreen();
-        } else {
-            canvasOverlay.innerHTML = htmlGameOver();
-        }
+        this.showWinOrLostScreen(canvasOverlay)
     }
 
     isCharacterDead() {
@@ -293,5 +296,13 @@ class World {
 
     clearAllIntervals() {
         for (let i = 1; i < 9999; i++) window.clearInterval(i);
+    }
+
+    showWinOrLostScreen(canvasOverlay) {
+        if(this.isCharacterDead()) {
+            canvasOverlay.innerHTML = htmlWinScreen();
+        } else {
+            canvasOverlay.innerHTML = htmlGameOver();
+        }
     }
 }

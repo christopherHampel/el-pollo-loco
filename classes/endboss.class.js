@@ -7,10 +7,10 @@ class Endboss extends MovableObject {
     accelearation = 2;
 
     offset = {
-        top: 150,
+        top: 200,
         bottom: 60,
-        right: 100,
-        left: 100,
+        right: 110,
+        left: 110,
     };
 
     collisionFromTop = false;
@@ -74,41 +74,58 @@ class Endboss extends MovableObject {
     }
 
     animate() {
+        this.endbossAnimations();
+        this.moveLeftEndboss();
+        this.damageAnimations();
+    }
+
+    endbossAnimations() {
         setInterval( () => {
             if(this.active) {
                 if(this.counterForPlayAnimation < this.runsAlertArray) {
                     this.playAnimation(this.IMAGES_ALERT);
                     this.counterForPlayAnimation++;
                 } else if(this.endbossAttack) {
-                    this.playAnimation(this.IMAGES_ATTACK);
-                    setTimeout(() => {
-                        this.endbossAttack = false;
-                    }, this.IMAGES_ATTACK.length * 200);
-                }
-                else {
+                    this.attackAnimation();
+                } else {
                     this.playAnimation(this.IMAGES_WALKING);
                 }
             }
         }, 200);
+    }
 
+    moveLeftEndboss() {
         setInterval( () => {
             if(this.counterForPlayAnimation == this.runsAlertArray) {
                 this.moveLeft(0.5);
             }
         }, 1000 / 60);
+    }
 
+    deadAnimation() {
+        this.playAnimation(this.IMAGES_DEAD);
+        setTimeout( () => {
+            this.applyGravity();
+        }, 1000);
+        setTimeout( () => {
+            this.world.showEndscreen();
+        }, 2000);
+    }
+
+    damageAnimations() {
         setInterval( () => {
             if(this.isDead(20)) {
-                this.playAnimation(this.IMAGES_DEAD);
-                setTimeout( () => {
-                    this.applyGravity();
-                }, 1000);
-                setTimeout( () => {
-                    this.world.showEndscreen();
-                }, 2000);
+                this.deadAnimation()
             } else if(this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } 
         }, 200);
+    }
+
+    attackAnimation() {
+        this.playAnimation(this.IMAGES_ATTACK);
+        setTimeout(() => {
+            this.endbossAttack = false;
+        }, this.IMAGES_ATTACK.length * 200);
     }
 }

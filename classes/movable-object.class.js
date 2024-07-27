@@ -21,7 +21,7 @@ class MovableObject extends DrawableObject {
     kikerikiSound = new Audio('audio/kikeriki.mp3');
 
     applyGravity() {
-        setInterval( () => {
+        this.gravityInterval = setInterval( () => {
             if(this.isAboveGround() || this.speedY > 0 || this.energy == 0 || this instanceof Endboss) {
                 this.y -= this.speedY;
                 this.speedY -= this.accelearation;

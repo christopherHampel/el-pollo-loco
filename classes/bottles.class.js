@@ -20,7 +20,7 @@ class Bottles extends MovableObject {
         this.loadImages(this.IMAGES_BOTTLES);
 
         this.y = 360 - Math.random() * 200;
-        this.x = 200 + Math.random() * 2500;
+        this.x = 200 + Math.random() * 1800;
 
         this.speed = 0.15 + Math.random() * 0.5;
 

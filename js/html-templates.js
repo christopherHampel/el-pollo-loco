@@ -1,6 +1,6 @@
 function htmlSteering() {
     return `
-    <div id="settings" class="settings additionally-imprint z-index-20">
+    <div onclick="notClosePopup(event)" id="settings" class="settings additionally-imprint z-index-20">
         <div class="container-for-close-button" onclick="closeHelp()">
             <span class="font-size-32">Steering</span>
             <img class="close-icon" src="img/settings/close-round-line-icon.png">
@@ -16,7 +16,7 @@ function htmlSteering() {
 
 function htmlStartScreen() {
     return `
-        <div class="start-screen">
+        <div class="start-screen" id="startScreen">
             <div class="button-start-steering">
                 <button class="start-button" onclick="init()">Start Game</button>
                 <button class="start-button" onclick="showHelp(htmlSteering)">Game controls</button>

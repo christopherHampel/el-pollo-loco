@@ -265,6 +265,37 @@ canvas {
     align-items: center;
 }
 
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #a0220a #f7c274;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #f7c274;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #a0220a;
+    border-radius: 3px;
+    border: 3px solid #a0220a;
+  }
+
+  .flex-start {
+    align-items: flex-start;
+  }
+
+  .scrollbar-div {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
 @media(max-width: 1000px) and (max-height: 500px) {
     .mobile-steering {
         height: 100%;
