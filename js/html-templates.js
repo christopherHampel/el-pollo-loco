@@ -1,15 +1,15 @@
 function htmlSteering() {
     return `
     <div onclick="notClosePopup(event)" id="settings" class="settings additionally-imprint z-index-20">
-        <div class="container-for-close-button" onclick="closeHelp()">
+        <div class="container-for-close-button">
             <span class="font-size-32">Steering</span>
-            <img class="close-icon" src="img/settings/close-round-line-icon.png">
+            <img onclick="closeHelp()" class="close-icon" src="img/settings/close-round-line-icon.png">
         </div>
         <div class="flex-column">
             <div class="flex-align-center"><img class="setting-icons" src="img/settings/left-arrow-button-icon.png"><span>Move left</span></div>
             <div class="flex-align-center"><img class="setting-icons" src="img/settings/right-arrow-button-icon.png"><span>Move right</span></div>
             <div class="flex-align-center"><img class="setting-icons" src="img/settings/space-button-icon.png"><span>Jump</span></div>
-            <div class="flex-align-center"><img class="setting-icons" src="img/settings/d-button-icon.png"><span>Throw Bottle</span></div>
+            <div class="flex-align-center"><img class="setting-icons" src="img/settings/d-button-icon.png"><span><Throw Bottle></span></div>
         </div>
     </div>`
 }
@@ -19,12 +19,9 @@ function htmlStartScreen() {
         <div class="start-screen" id="startScreen">
             <div class="button-start-steering">
                 <button class="start-button" onclick="init()">Start Game</button>
+                <button class="start-button" onclick="showHelp(htmlGameExplanation)">Game Explanation</button>
                 <button class="start-button" onclick="showHelp(htmlSteering)">Game controls</button>
                 <button class="start-button" onclick="showHelp(returnImprintAndPrivacyPolice)">Legal Notice</button>
-            </div>
-            <div class="game-settings">
-                <img onclick="openFullscreen()" class="icons" src="img/icons/fullscreen.png">
-                <img onclick="" class="icons" src="img/icons/volume-silent-line-icon.png">
             </div>
         </div>`
 }
@@ -69,4 +66,20 @@ function htmlGameOver() {
             <button onclick="showStartscreen()" class="start-button">Menu</button>
         </div>
     </div>`
+}
+
+function htmlGameExplanation() {
+    return `
+    <div onclick="notClosePopup(event)" class="settings additionally-imprint flex-start">
+        <div class="container-for-close-button flex-start">
+            <span class="font-size-32">Game explanation</span>
+            <img onclick="closeHelp()" class="icons" src="img/settings/close-round-line-icon.png">
+        </div>
+        <div>lorem ipsum</div>
+    </div>`
+}
+
+function htmlMuteButton() {
+    return `
+    <div class="mute-button"><img id="mute" onclick="muteGame()" class="icons" src="img/icons/volume-silent-line-icon.png"></div>`
 }

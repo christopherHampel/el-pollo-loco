@@ -2,9 +2,9 @@ function returnImprintAndPrivacyPolice() {
     return `
     <div class="scrollbar-div" onclick="notClosePopup(event)">
     <div id="settings" class="settings additionally-imprint">
-    <div class="container-for-close-button flex-start" onclick="closeHelp()">
+    <div class="container-for-close-button flex-start">
         <span class="font-size-32">Imprint & Legal notice</span>
-        <img class="close-icon" src="img/settings/close-round-line-icon.png">
+        <img onclick="closeHelp()" class="close-icon" src="img/settings/close-round-line-icon.png">
     </div>
     <div>
         <h2>Impressum</h2>

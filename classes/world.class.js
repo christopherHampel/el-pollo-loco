@@ -15,6 +15,9 @@ class World {
     throwableObjects = [new TrowableObject()];
     lastThrowTime = 0;
 
+    collect_coin_sound = new Audio('audio/collect_coin.mp3');
+    collect_bottle_sound = new Audio('audio/collect_bottle_sound.mp3');
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas; 
@@ -35,7 +38,8 @@ class World {
     run() {
         setInterval( () => {
             this.checkCollisionsEnemies();
-            this.collectCoinsOrBottles();
+            this.collectedBottles();
+            this.collectedItems(this.level.coins, this.statusbarCoins.collectedCoins);
             this.checkThrowObjects(); 
             this.lastTriggerKeyboard();
         }, 100);
@@ -46,7 +50,7 @@ class World {
     
             if(this.positionCharacterToEndboss()){
                 this.level.enemies[0].active = true;
-                this.level.enemies[0].kikerikiSound.play();
+                // this.level.enemies[0].kikerikiSound.play();
                 clearInterval(intervalIsEndbossVisible);
                 this.addNewSmallChicken();
                 this.checkCollisionsWithEndboss();
@@ -69,6 +73,7 @@ class World {
                 this.character.hit(5);
                 this.statusbarHealth.setPercentage(this.character.energy);
             } else if(this.character.isColliding(enemy) && !enemy.killed && this.character.isAboveGround()) {
+                enemy.chicken_scream_audio.play();
                 this.killChickenFromTop(enemy);
             }
         }
@@ -99,20 +104,19 @@ class World {
         return lastPressKeyboard;
     }
 
-    collectCoinsOrBottles() {
-        if(this.statusbarCoins.collectedCoins < 5) {
-            this.collectedItems(this.level.coins);
-        }
-        if(this.statusbarBottles.collectedBottles < 5) {
-            this.collectedItems(this.level.bottles);
+    collectedBottles() {
+        if(this.statusbarCoins.collectedCoins > 0) {
+            this.collectedItems(this.level.bottles, this.statusbarBottles.collectedBottles);
         }
     }
 
-    collectedItems(items) {
+    collectedItems(items, amountItems) {
         items.forEach( (item) => {
-            if(this.character.isColliding(item)){
-                this.deleteCollectedItems(items, item);
-                this.countCollectedItems(items, true);
+            if(amountItems < 5) {
+                if(this.character.isColliding(item)){
+                    this.deleteCollectedItems(items, item);
+                    this.countCollectedItems(items, true);
+                }
             }
         })
     }
@@ -128,11 +132,13 @@ class World {
         if(items == this.level.coins) {
             this.statusbarCoins.collectedCoins++;
             this.statusbarCoins.setPercentage(this.statusbarCoins.collectedCoins);
+            this.collect_coin_sound.play();
         } else if(isBottle) {
             this.statusbarCoins.collectedCoins--;
             this.statusbarBottles.collectedBottles++;
             this.statusbarCoins.setPercentage(this.statusbarCoins.collectedCoins);
             this.statusbarBottles.setPercentage(this.statusbarBottles.collectedBottles);
+            this.collect_bottle_sound.play();
         }
     }
  
@@ -158,7 +164,6 @@ class World {
         let bottle = new TrowableObject(this.character.x + this.character.offset.right, this.character.y + 50, this.character.otherDirection);
         this.throwableObjects.push(bottle);
         bottle.world = this;
-        // console.log(this.throwableObjects);
         this.character.throwBottleSound.play();
     }
 

@@ -13,13 +13,6 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
 
-    hurtSound = new Audio('audio/hurt.mp3');
-    throwBottleSound = new Audio('audio/throw-alternative.mp3');
-    runSound = new Audio('audio/run.mp3');
-    gameoverSound = new Audio('audio/gameover.mp3');
-    jumpSound = new Audio('audio/jump.mp3');
-    kikerikiSound = new Audio('audio/kikeriki.mp3');
-
     applyGravity() {
         this.gravityInterval = setInterval( () => {
             if(this.isAboveGround() || this.speedY > 0 || this.energy == 0 || this instanceof Endboss) {
@@ -92,5 +85,9 @@ class MovableObject extends DrawableObject {
         clearInterval(this.intervalMoveLeft);
         clearInterval(this.intervalMovePlayAnimation);
         this.loadImage(this.IMAGE_DEAD);
+    }
+
+    movableObjectsSound(boolean) {
+        this.chicken_scream_audio.muted = boolean;
     }
 }

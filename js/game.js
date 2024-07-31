@@ -4,7 +4,7 @@ let canvas;
 let world;
 let lastPressKeyboard;
 keyboard = new Keyboard();
-// let welcomeSound = new Audio('audio/mariachi.mp3');
+let isMuted = false;
 
 function init() {
     lastPressKeyboard = new Date().getTime();
@@ -22,6 +22,7 @@ function deleteStartScreen() {
     let canvas = document.getElementById('canvas');
 
     canvasOverlay.innerHTML = '';
+    canvasOverlay.innerHTML = htmlMuteButton();
     canvas.classList.remove('visibility-hidden')
 }
 
@@ -33,10 +34,10 @@ function showStartscreen() {
     mobileSteeringBackground.classList.add('visibility-hidden');
     canvas.classList.add('visibility-hidden');
 
-    checkLandscapeModus(canvasOverlay);
+    checkLandscapeModus(canvasOverlay, canvas);
 }
 
-function checkLandscapeModus(canvasOverlay) {
+function checkLandscapeModus(canvasOverlay, canvas) {
     if (window.innerHeight > window.innerWidth) {
         canvasOverlay.innerHTML = htmlTurnYourDevice();
     } else {
@@ -50,17 +51,6 @@ function checkLandscapeModus(canvasOverlay) {
     }
 }
 
-function openFullscreen() {
-    let elem = document.getElementById('startScreen');
-
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
-      elem.msRequestFullscreen();
-    }
-}
 
 function showHelp(htmlPart) {
     let overlaySettings = document.getElementById('backgroundForGeneral');
@@ -76,4 +66,26 @@ function closeHelp() {
 
 function notClosePopup(event) {
     event.stopPropagation();
+}
+
+
+function muteGame() {
+    let muteIcon = document.getElementById('mute');
+
+    if (isMuted) {
+        muteIcon.src = 'img/icons/volume-silent-line-icon.png';
+        world.character.characterSound(false);
+        enemiesSound(false);
+    } else {
+        muteIcon.src = 'img/icons/volume-full-line-icon.png';
+        world.character.characterSound(true);
+        enemiesSound(true);
+    }
+    isMuted = !isMuted;
+}
+
+function enemiesSound(boolean) {
+    world.level.enemies.slice(1).forEach(enemy => {
+        enemy.movableObjectsSound(boolean);
+    });
 }
