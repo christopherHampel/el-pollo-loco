@@ -59,6 +59,8 @@ class Endboss extends MovableObject {
     endbossAttack = false;
     counterForPlayAnimation = 0;
     runsAlertArray = this.IMAGES_ALERT.length * 1;
+    kikeriki = new Audio('audio/kikeriki.mp3');
+    game_win_sound = new Audio('audio/game-win.mp3');
     world;
 
     constructor() {
@@ -70,7 +72,6 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.active = false;
         this.x = 2500;
-        this.animate();
     }
 
     animate() {
@@ -81,15 +82,14 @@ class Endboss extends MovableObject {
 
     endbossAnimations() {
         setInterval( () => {
-            if(this.active) {
-                if(this.counterForPlayAnimation < this.runsAlertArray) {
-                    this.playAnimation(this.IMAGES_ALERT);
-                    this.counterForPlayAnimation++;
-                } else if(this.endbossAttack) {
-                    this.attackAnimation();
-                } else {
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
+            if(this.counterForPlayAnimation < this.runsAlertArray) {
+                this.playAnimation(this.IMAGES_ALERT);
+                this.counterForPlayAnimation++;
+                this.kikeriki.play();
+            } else if(this.endbossAttack) {
+                this.attackAnimation();
+            } else {
+                this.playAnimation(this.IMAGES_WALKING);
             }
         }, 200);
     }
@@ -109,6 +109,8 @@ class Endboss extends MovableObject {
         }, 1000);
         setTimeout( () => {
             this.world.showEndscreen();
+            this.game_win_sound.play();
+            pauseBackgroundMusic();
         }, 2000);
     }
 

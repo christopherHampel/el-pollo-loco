@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title>El Pollo loco</title>
 
     <link rel="shortcut icon" href="img/icons/favicon.png" type="image/x-icon">
@@ -38,20 +39,19 @@
 
 <body onload="showStartscreen()">
 
-    <span class="headline">El Pollo Loco</span>
-
-    <div id="canvasOverlay" class="position-fixed flex-center-center z-index-10"></div>
+    <div id="canvasOverlay" class="position-fixed flex-center-center z-index-10 display-block"></div>
     
     <div id="canvasBackground" class="canvas-background d-flex-center position-fixed">
         <canvas id="canvas" width="720" height="480" id="canvas"></canvas>
     </div>
 
-    <div id="mobileSteeringBackground" class="position-fixed flex-center-center visibility-hidden z-index-15">
+    <div id="mobileSteeringBackground" class="position-fixed flex-center-center visibility-hidden z-index-15 display-block">
         <div class="mobile-steering">
             <div class="touch-panels">
                 <div id="moveLeft" class="mobile-button"><img class="steering-mobile" src="/img/mobile_buttons/arrow-left-icon.png"></div>
                 <div id="moveRight" class="mobile-button"><img class="steering-mobile" src="/img/mobile_buttons/arrow-right-icon.png"></div>
             </div>
+            <div class="mute-button"><img id="mute" onclick="sounds()" class="icons" src="img/icons/volume-silent-line-icon.png"></div>
             <div class="touch-panels">
                 <div id="jump" class="mobile-button"><img class="steering-mobile" src="/img/mobile_buttons/arrow-top-icon.png"></div>
                 <div id="throw" class="mobile-button"><img class="steering-mobile" src="/img/mobile_buttons/bottle-wine-icon.png"></div>
@@ -59,6 +59,10 @@
         </div>
     </div>
 
-    <div onclick="closeHelp()" id="backgroundForGeneral" class="position-fixed flex-center-center visibility-hidden z-index-30"></div>
+    <div id="onlyLandscapeModus" class="position-fixed display-flex-center">
+        <div><img class="turn-device-icon" src="/img/settings/mobile-landscape-mode-icon.png"></div>
+    </div>
+
+    <div onclick="closeHelp()" id="backgroundForGeneral" class="position-fixed flex-center-center visibility-hidden z-index-30 display-block"></div>
 </body>
 </html>

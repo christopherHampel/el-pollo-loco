@@ -1,29 +1,36 @@
-window.addEventListener('resize', showStartscreen);
-
 let canvas;
 let world;
 let lastPressKeyboard;
 keyboard = new Keyboard();
 let isMuted = false;
+let backgroundMusic = new Audio('audio/mariachi.mp3');
 
 function init() {
     lastPressKeyboard = new Date().getTime();
 
     deleteStartScreen();
     activateMobileSteering();
+    playBackgroundMusic()
     initLevel();
-
+    
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
 
-function deleteStartScreen() {
-    let canvasOverlay = document.getElementById('canvasOverlay');
-    let canvas = document.getElementById('canvas');
+function playBackgroundMusic() {
+    backgroundMusic.volume = 0.1;
+    backgroundMusic.loop = true;
+    backgroundMusic.play(); 
+}
 
-    canvasOverlay.innerHTML = '';
-    canvasOverlay.innerHTML = htmlMuteButton();
-    canvas.classList.remove('visibility-hidden')
+function pauseBackgroundMusic() {
+    backgroundMusic.loop = false;
+    backgroundMusic.pause(); 
+}
+
+function deleteStartScreen() {
+    let canvas = document.getElementById('canvas');
+    canvas.classList.remove('visibility-hidden');
 }
 
 function showStartscreen() {
@@ -33,24 +40,10 @@ function showStartscreen() {
 
     mobileSteeringBackground.classList.add('visibility-hidden');
     canvas.classList.add('visibility-hidden');
+    canvasOverlay
 
-    checkLandscapeModus(canvasOverlay, canvas);
+    canvasOverlay.innerHTML = htmlStartScreen();
 }
-
-function checkLandscapeModus(canvasOverlay, canvas) {
-    if (window.innerHeight > window.innerWidth) {
-        canvasOverlay.innerHTML = htmlTurnYourDevice();
-    } else {
-        if (window.innerWidth > 600) {
-            canvasOverlay.innerHTML = htmlStartScreen();
-        } else {
-            canvas.innerHTML = '';
-            canvasOverlay.innerHTML = '';
-            canvasOverlay.innerHTML = htmlTurnYourDevice();
-        }
-    }
-}
-
 
 function showHelp(htmlPart) {
     let overlaySettings = document.getElementById('backgroundForGeneral');
@@ -68,24 +61,38 @@ function notClosePopup(event) {
     event.stopPropagation();
 }
 
-
-function muteGame() {
+function sounds() {
     let muteIcon = document.getElementById('mute');
 
     if (isMuted) {
-        muteIcon.src = 'img/icons/volume-silent-line-icon.png';
-        world.character.characterSound(false);
-        enemiesSound(false);
+        muteGame(muteIcon);
     } else {
-        muteIcon.src = 'img/icons/volume-full-line-icon.png';
-        world.character.characterSound(true);
-        enemiesSound(true);
+        unMuteGame(muteIcon);
     }
     isMuted = !isMuted;
+}
+
+function muteGame(muteIcon) {
+    muteIcon.src = 'img/icons/volume-silent-line-icon.png';
+    world.character.characterSound(false);
+    enemiesSound(false);
+    itemsSound(false);
+}
+
+function unMuteGame(muteIcon) {
+    muteIcon.src = 'img/icons/volume-full-line-icon.png';
+    world.character.characterSound(true);
+    enemiesSound(true);
+    itemsSound(true);
 }
 
 function enemiesSound(boolean) {
     world.level.enemies.slice(1).forEach(enemy => {
         enemy.movableObjectsSound(boolean);
     });
-}
+};
+
+function itemsSound(boolean) {
+    world.collect_coin_sound.muted = boolean;
+    world.collect_bottle_sound.muted = boolean;
+};

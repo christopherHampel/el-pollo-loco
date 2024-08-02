@@ -13,6 +13,8 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
 
+    chicken_scream_audio = new Audio('audio/chicken-noise.mp3');
+
     applyGravity() {
         this.gravityInterval = setInterval( () => {
             if(this.isAboveGround() || this.speedY > 0 || this.energy == 0 || this instanceof Endboss) {

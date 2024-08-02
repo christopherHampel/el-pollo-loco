@@ -80,11 +80,12 @@ class Character extends MovableObject {
 
     world;
 
-    // mariachiSound = new Audio('audio/mariachi.mp3');
     jumpSound = new Audio('audio/jump.mp3');
+    character_hurt_sound = new Audio('audio/hurt.mp3');
     gameoverSound = new Audio('audio/gameover.mp3');
     runSound = new Audio('audio/run.mp3');
     throwBottleSound = new Audio('audio/throw-alternative.mp3');
+    pepe_snoring = new Audio('audio/pepe_snoring.mp3');
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -95,15 +96,12 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.applyGravity();
-        // this.animate();
-        // this.charachterAnimationsImages();
-        // this.characterIdle();
         this.animate();
         this.initAnimationTimer();
         this.initAnimationIdle();
     }
 
-    animate() {
+    animate() {;
         setInterval(() => {
             this.handleMovement();
             this.updateCameraPosition();
@@ -154,6 +152,10 @@ class Character extends MovableObject {
     characterIdle() {
         if (!this.isAnyKeyPressed() && !this.isHurt()) {
             this.checkIdleOrLongIdle();
+        } 
+        
+        if(this.isAnyKeyPressed()) {
+            this.pepe_snoring.pause();
         }
     }
 
@@ -163,6 +165,7 @@ class Character extends MovableObject {
             this.idleTime += 300;
         } else {
             this.playAnimation(this.IMAGES_LONG_IDLE);
+            this.pepe_snoring.play();
         }
     }
 
@@ -198,6 +201,7 @@ class Character extends MovableObject {
             this.world.showEndscreen();
             this.applyGravity();
             this.gameoverSound.play();
+            pauseBackgroundMusic();
         }, 1000);
     }
 
@@ -214,101 +218,7 @@ class Character extends MovableObject {
         this.throwBottleSound.muted = boolean;
     }
 
-    // characterSoundPlay() {
-    //     this.jumpSound.muted = false;
-    //     this.runSound.muted = false;
-    //     this.gameoverSound.muted = false;
-    //     this.throwBottleSound.muted = false;
-    // }
+    characterHitTime(now) {
+        return now - this.lastHit >= 2000;
+    }
 }
-
-    
-
-//     animate() {
-//             setInterval(() => {
-//                 if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-//                     this.characterMoveRight();
-//                 }
-//                 if(this.world.keyboard.LEFT && this.x > 0) {
-//                     this.characterMoveLeft();
-//                 } 
-//                 if(this.world.keyboard.SPACE && !this.isAboveGround(220)){
-//                     this.jump();
-//                     this.jumpSound.play();
-//                 }
-//                 this.world.camera_x = -this.x + 200;
-//             }, 1000/60);
-//     }
-
-//     characterIdle() {
-//         setInterval( () => {
-//             if(!this.isAnyKeyPressed() && !this.isHurt()) {
-//                 this.checkIdleOrLongIdle();
-//             }
-//         }, 300);
-//     }
-
-//     charachterAnimationsImages() {
-//         setInterval( () => {
-//             if(this.isDead(0)){
-//                 this.gameOverAnimation();
-//             } else if(this.isHurt()) {
-//                 this.isHurtAnimation();
-//             } else if(this.isAboveGround()) {
-//                 this.playAnimation(this.IMAGES_JUMPING);
-//             } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-//                 this.playAnimation(this.IMAGES_WALKING);
-//             }
-//         }, 100);
-//     }
-
-//     checkIdleOrLongIdle() {
-//         if(this.timeForIdleCondition()) {
-//             this.playAnimation(this.IMAGES_IDLE);
-//             this.idleTime += 300;
-//         } else {
-//             this.playAnimation(this.IMAGES_LONG_IDLE);
-//         }
-//     }
-
-//     timeForIdleCondition() {
-//         let lastPressKeyboardTime = this.world.lastTriggerKeyboard();
-//         let timepassed = (new Date().getTime() - lastPressKeyboardTime) / 1000;
-//         return timepassed < 15;
-//     }
-
-//     isAnyKeyPressed() {
-//         return Object.values(this.world.keyboard).some(value => value);
-//     }
-
-//     characterMoveRight() {
-//         this.moveRight();
-//         this.otherDirection = false;
-//         if (!this.isInAir) {
-//             this.runSound.play();
-//         }
-//     }
-
-//     characterMoveLeft() {
-//         this.moveLeft(5);
-//         this.otherDirection = true;
-//         if (!this.isInAir) {
-//             this.runSound.play();
-//         }
-//     }
-
-//     gameOverAnimation() {
-//         this.playAnimation(this.IMAGES_DEAD);
-//         setTimeout( () => {
-//             this.world.showEndscreen();
-//             this.applyGravity();
-//             this.gameoverSound.play();
-//         }, 1000);
-//     }
-
-//     isHurtAnimation() {
-//         this.currentHurt = true;
-//         this.playAnimation(this.IMAGES_HURT);
-//         setTimeout(() => this.currentHurt = false, 1000);
-//     }
-// }

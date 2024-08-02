@@ -18,7 +18,7 @@ class SmallChicken extends MovableObject {
 
     IMAGE_DEAD = ['img/3_enemies_chicken/chicken_small/2_dead/dead.png'];
 
-    chicken_scream_audio = new Audio('audio/chicken-noise.mp3');
+    // chicken_scream_audio = new Audio('audio/chicken-noise.mp3');
 
     constructor(startXPosition) {
         super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');

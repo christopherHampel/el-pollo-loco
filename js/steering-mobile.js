@@ -1,6 +1,8 @@
-// document.addEventListener("DOMContentLoaded", () => {
 function activateMobileSteering() {
     let userAgent = navigator.userAgent.toLowerCase();
+    let muteButton = document.getElementById('mute');
+    let canvasOverlay = document.getElementById('canvasOverlay');
+    canvasOverlay.innerHTML = '';
 
     if (/mobile|android|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent)) {
         let mobileSteeringBackground = document.getElementById('mobileSteeringBackground');
@@ -50,6 +52,8 @@ function activateMobileSteering() {
             e.preventDefault();
             keyboard.D = false;
         })
+    } else {
+        canvasOverlay.innerHTML = htmlMuteButton();
     }
 }
 
