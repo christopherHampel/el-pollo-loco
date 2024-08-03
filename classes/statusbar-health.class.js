@@ -1,3 +1,8 @@
+/**
+ * Class representing a status bar for the player's health.
+ * Displays the player's health percentage as a status bar.
+ * Extends DrawableObject to utilize image rendering.
+ */
 class StatusbarHealth extends DrawableObject {
 
     IMAGES_STATUSBAR = [
@@ -11,6 +16,9 @@ class StatusbarHealth extends DrawableObject {
 
     percantage = 100;
 
+    /**
+     * Creates an instance of StatusbarHealth and initializes its properties.
+     */
     constructor(){
        super().loadImages(this.IMAGES_STATUSBAR);
        this.x = 50;
@@ -20,12 +28,21 @@ class StatusbarHealth extends DrawableObject {
        this.setPercentage(100);
     }
 
+    /**
+     * Updates the status bar to reflect the percentage of the player's health.
+     * @param {number} percantage - The current health percentage of the player.
+     */
     setPercentage(percantage){
         this.percantage = percantage;
         let path = this.IMAGES_STATUSBAR[this.resolveImagesIndex(this.percantage)];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Resolves the image index based on the current health percentage of the player.
+     * @param {number} percantage - The current health percentage of the player.
+     * @returns {number} The index of the image to be used.
+     */
     resolveImagesIndex(percantage) {
         if(percantage == 100) {
             return 0;

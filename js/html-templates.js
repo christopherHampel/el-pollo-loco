@@ -94,7 +94,7 @@ function htmlGameExplanation() {
                 <br><br>
             <h2>Coin zu Flasche</h2>
                 <br>
-                <p>Das Sammeln von Coins ist der Schlüssel zum Erfolg. Für jede Coin, die Pepe einsammelt, erhält er eine Salsa-Flasche. Diese Flaschen sind entscheidend, um den Endboss zu besiegen und das Abenteuer erfolgreich abzuschließen.</p>
+                <p>Das Sammeln von Coins ist der Schlüssel zum Erfolg. Für jeden Coin, die Pepe einsammelt, kann er eine Salsa-Flasche fangen. Diese Flaschen sind entscheidend, um den Endboss zu besiegen und das Abenteuer erfolgreich abzuschließen.</p>
                 <br><br>
             <h2>Zusammenfassung</h2>
                 <br>

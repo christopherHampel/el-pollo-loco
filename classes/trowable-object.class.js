@@ -1,3 +1,7 @@
+/**
+ * Class representing an object that can be thrown and interacts with the world.
+ * Extends MovableObject to include movement and gravity functionalities.
+ */
 class TrowableObject extends MovableObject {
 
     IMAGES_SPLASH = [
@@ -25,8 +29,13 @@ class TrowableObject extends MovableObject {
 
     world;
     throwBottleSound = new Audio('audio/throw-alternative.mp3');
-    // bottleRotation = false;
 
+    /**
+     * Creates an instance of TrowableObject and initializes its properties.
+     * @param {number} x - The initial x position of the bottle.
+     * @param {number} y - The initial y position of the bottle.
+     * @param {boolean} otherDirection - Indicates the direction of the throw.
+     */
     constructor(x, y, otherDirection){
         super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
         this.loadImages(this.IMAGES_SPLASH);
@@ -43,6 +52,9 @@ class TrowableObject extends MovableObject {
         this.startRotation();
     }
 
+    /**
+     * Initiates the throwing action of the bottle.
+     */
     throw() {
         this.speedY = 25;
         this.applyGravity();
@@ -55,12 +67,18 @@ class TrowableObject extends MovableObject {
         }, 25);
     }
 
+    /**
+     * Starts the rotation animation of the bottle.
+     */
     startRotation() {
         this.intervalRotation = setInterval(() => {
             this.playAnimation(this.IMAGES_ROTATION);
         }, 100);
     }
 
+    /**
+     * Initiates the splash effect when the bottle hits the ground.
+     */
     splash() {
         this.intervalSplash = setInterval( () => {
             if(this.splashBottleOnGround()) {
@@ -69,18 +87,39 @@ class TrowableObject extends MovableObject {
         }, 25)
     }
 
+    /**
+     * Handles the splash effect of the bottle and removes it from the world.
+     */
     splashBottle() {
         clearInterval(this.intervalThrow);
         clearInterval(this.intervalSplash);
         clearInterval(this.gravityInterval);
         clearInterval(this.intervalRotation);
-        this.playAnimation(this.IMAGES_SPLASH);
-        setTimeout( () => {
-            this.world.throwableObjects.splice(this.world.throwableObjects[1], 1);
-        }, this.IMAGES_SPLASH.length * 100);
+        this.splashAnimation = setInterval( () => {
+            this.playAnimation(this.IMAGES_SPLASH);
+        }, 50)
+        setTimeout(() => {
+            clearInterval(this.splashAnimation);
+            this.delete();
+        }, this.IMAGES_SPLASH.length * 50);
     }
 
+    /**
+     * Determines if the bottle has hit the ground.
+     * @returns {boolean} True if the bottle is on the ground and there are throwable objects in the world.
+     */
     splashBottleOnGround() {
         return !this.isAboveGround() && this.world.throwableObjects.length > 0;
+    }
+    /**
+    * Removes this throwable object from the world's list of throwable objects.
+    * This method finds the index of this object in the world's `throwableObjects` array
+    * and removes it if it exists.
+    */
+    delete() {
+        let index = this.world.throwableObjects.indexOf(this);
+        if (index > -1) {
+            this.world.throwableObjects.splice(index, 1);
+        }
     }
 }

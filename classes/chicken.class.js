@@ -1,3 +1,8 @@
+
+/**
+ * Class representing a chicken in the game.
+ * @extends MovableObject
+ */
 class Chicken extends MovableObject {
     
     y = 360;
@@ -21,20 +26,24 @@ class Chicken extends MovableObject {
 
     IMAGE_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
-    // chicken_scream_audio = new Audio('audio/chicken-noise.mp3');
-
+    /**
+     * Creates an instance of Chicken.
+     */
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGE_DEAD);
         this.applyGravity();
-        this.x = 350 + Math.random() * 3000;
+        this.x = 400 + Math.random() * 3000;
 
         this.speed = 0.15 + Math.random() * 0.5;
             
         this.animate();
     }
 
+    /**
+     * Animates the chicken by moving it left and playing the walking animation.
+     */
     animate() {
         this.intervalMoveLeft = setInterval( () => {
             this.moveLeft(0.2);

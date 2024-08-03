@@ -1,3 +1,7 @@
+/**
+ * Class representing a small chicken in the game.
+ * @extends MovableObject
+ */
 class SmallChicken extends MovableObject {
     y = 360;
     width = 50;
@@ -18,19 +22,24 @@ class SmallChicken extends MovableObject {
 
     IMAGE_DEAD = ['img/3_enemies_chicken/chicken_small/2_dead/dead.png'];
 
-    // chicken_scream_audio = new Audio('audio/chicken-noise.mp3');
-
+    /**
+     * Creates an instance of SmallChicken.
+     * @param {number} startXPosition - The starting x-coordinate of the small chicken.
+     */
     constructor(startXPosition) {
         super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
-        // this.x = 200 + Math.random() * 500;
         this.x = startXPosition;
 
         this.speed = 0.15 + Math.random() * 0.5;
             
         this.animate();
+        this.applyGravity();
     }
 
+    /**
+     * Animates the small chicken by moving it left and playing the walking animation.
+     */
     animate() {
         this.intervalMoveLeft = setInterval( () => {
             this.moveLeft(1.5);

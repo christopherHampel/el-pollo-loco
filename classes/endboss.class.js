@@ -1,3 +1,7 @@
+/**
+ * Class representing the end boss in the game.
+ * Inherits from MovableObject and handles the end boss's animations, movements, and behaviors.
+ */
 class Endboss extends MovableObject {
 
     width = 250;
@@ -57,12 +61,17 @@ class Endboss extends MovableObject {
     ];
 
     endbossAttack = false;
+    // killed = true;
     counterForPlayAnimation = 0;
     runsAlertArray = this.IMAGES_ALERT.length * 1;
     kikeriki = new Audio('audio/kikeriki.mp3');
     game_win_sound = new Audio('audio/game-win.mp3');
     world;
 
+    /**
+     * Creates an instance of the Endboss class.
+     * Loads images and initializes the end boss's position and state.
+     */
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -74,12 +83,18 @@ class Endboss extends MovableObject {
         this.x = 2500;
     }
 
+    /**
+     * Starts the animation and movement for the end boss.
+     */
     animate() {
         this.endbossAnimations();
         this.moveLeftEndboss();
         this.damageAnimations();
     }
 
+    /**
+     * Handles the end boss's animations and sounds.
+     */
     endbossAnimations() {
         setInterval( () => {
             if(this.counterForPlayAnimation < this.runsAlertArray) {
@@ -94,6 +109,9 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
+    /**
+     * Moves the end boss to the left if it's in alert mode.
+     */
     moveLeftEndboss() {
         setInterval( () => {
             if(this.counterForPlayAnimation == this.runsAlertArray) {
@@ -102,6 +120,9 @@ class Endboss extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Handles the end boss's death animation and game win sequence.
+     */
     deadAnimation() {
         this.playAnimation(this.IMAGES_DEAD);
         setTimeout( () => {
@@ -114,6 +135,9 @@ class Endboss extends MovableObject {
         }, 2000);
     }
 
+    /**
+     * Handles the end boss's damage and death animations.
+     */
     damageAnimations() {
         setInterval( () => {
             if(this.isDead(20)) {
@@ -124,6 +148,9 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
+    /**
+     * Handles the end boss's attack animation.
+     */
     attackAnimation() {
         this.playAnimation(this.IMAGES_ATTACK);
         setTimeout(() => {

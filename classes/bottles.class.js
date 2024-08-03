@@ -1,3 +1,7 @@
+/**
+ * Class representing a bottle in the game.
+ * @extends MovableObject
+ */
 class Bottles extends MovableObject {
     
     height = 80;
@@ -15,6 +19,9 @@ class Bottles extends MovableObject {
         'img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
     ];
 
+        /**
+     * Creates an instance of Bottles.
+     */
     constructor() {
         super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
         this.loadImages(this.IMAGES_BOTTLES);
@@ -27,6 +34,9 @@ class Bottles extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Animates the bottle by cycling through the images.
+     */
     animate() {
         setInterval( () => {
             this.playAnimation(this.IMAGES_BOTTLES)

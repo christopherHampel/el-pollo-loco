@@ -1,3 +1,7 @@
+/**
+ * Class representing the character in the game.
+ * @extends MovableObject
+ */
 class Character extends MovableObject {
 
     y = 180;
@@ -12,6 +16,7 @@ class Character extends MovableObject {
     };
 
     currentHurt = false;
+    isHurtFlag = false;
 
     idleTime = 0;
 
@@ -87,6 +92,9 @@ class Character extends MovableObject {
     throwBottleSound = new Audio('audio/throw-alternative.mp3');
     pepe_snoring = new Audio('audio/pepe_snoring.mp3');
 
+    /**
+     * Creates an instance of Character.
+     */
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -101,25 +109,39 @@ class Character extends MovableObject {
         this.initAnimationIdle();
     }
 
+    /**
+     * Animates the character by updating its position and handling movements.
+     */
     animate() {;
         setInterval(() => {
-            this.handleMovement();
+            if (!this.isHurtFlag) {
+                this.handleMovement();
+            }
             this.updateCameraPosition();
         }, 1000 / 60);
     }
 
+    /**
+     * Initializes the animation timer to update the character's animation.
+     */
     initAnimationTimer() {
         setInterval(() => {
             this.updateAnimation();
         }, 100);
     }
 
+    /**
+     * Initializes the idle animation for the character.
+     */
     initAnimationIdle() {
         setInterval(() => {
             this.characterIdle();
         }, 300);
     }
 
+    /**
+     * Handles the character's movements based on keyboard input.
+     */
     handleMovement() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.characterMoveRight();
@@ -133,10 +155,16 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Updates the camera position based on the character's position.
+     */
     updateCameraPosition() {
         this.world.camera_x = -this.x + 200;
     }
 
+    /**
+     * Updates the character's animation based on its state (e.g., walking, jumping, hurt).
+     */
     updateAnimation() {
         if (this.isDead(0)) {
             this.gameOverAnimation();
@@ -149,6 +177,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Handles the idle animation of the character.
+     */
     characterIdle() {
         if (!this.isAnyKeyPressed() && !this.isHurt()) {
             this.checkIdleOrLongIdle();
@@ -159,6 +190,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Checks if the character should play the idle or long idle animation.
+     */
     checkIdleOrLongIdle() {
         if (this.timeForIdleCondition()) {
             this.playAnimation(this.IMAGES_IDLE);
@@ -169,16 +203,27 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Checks if the time since the last keyboard input is less than 15 seconds.
+     * @returns {boolean} True if the time since the last input is less than 15 seconds, false otherwise.
+     */
     timeForIdleCondition() {
         let lastPressKeyboardTime = this.world.lastTriggerKeyboard();
         let timepassed = (new Date().getTime() - lastPressKeyboardTime) / 1000;
         return timepassed < 15;
     }
 
+    /**
+     * Checks if any key is currently pressed.
+     * @returns {boolean} True if any key is pressed, false otherwise.
+     */
     isAnyKeyPressed() {
         return Object.values(this.world.keyboard).some(value => value);
     }
 
+    /**
+     * Moves the character to the right.
+     */
     characterMoveRight() {
         this.moveRight();
         this.otherDirection = false;
@@ -187,6 +232,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Moves the character to the left.
+     */
     characterMoveLeft() {
         this.moveLeft(5);
         this.otherDirection = true;
@@ -195,30 +243,55 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Plays the game over animation and handles the game over state.
+     */
     gameOverAnimation() {
         this.playAnimation(this.IMAGES_DEAD);
         setTimeout(() => {
             this.world.showEndscreen();
             this.applyGravity();
             this.gameoverSound.play();
+            this.pepe_snoring.pause();
             pauseBackgroundMusic();
         }, 1000);
     }
 
+    /**
+     * Plays the hurt animation.
+     */
     isHurtAnimation() {
         this.currentHurt = true;
         this.playAnimation(this.IMAGES_HURT);
         setTimeout(() => this.currentHurt = false, 1000);
     }
 
+    /**
+     * Mutes or unmutes the character's sounds.
+     * @param {boolean} boolean - True to mute the sounds, false to unmute.
+     */
     characterSound(boolean) {
+        this.pepe_snoring.muted = boolean;
         this.jumpSound.muted = boolean;
         this.runSound.muted = boolean;
         this.gameoverSound.muted = boolean;
         this.throwBottleSound.muted = boolean;
     }
 
+    /**
+     * Checks if the character can be hurt based on the time since the last hit.
+     * @param {number} now - The current time.
+     * @returns {boolean} True if the character can be hurt, false otherwise.
+     */
     characterHitTime(now) {
         return now - this.lastHit >= 2000;
+    }
+
+    /**
+     * Sets the hurt state of the character.
+     * @param {boolean} isHurt - True if the character is hurt, false otherwise.
+     */
+    setHurt(isHurt) {
+        this.isHurtFlag = isHurt;
     }
 }
