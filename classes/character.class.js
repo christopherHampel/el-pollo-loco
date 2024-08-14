@@ -208,7 +208,7 @@ class Character extends MovableObject {
      * @returns {boolean} True if the time since the last input is less than 15 seconds, false otherwise.
      */
     timeForIdleCondition() {
-        let lastPressKeyboardTime = this.world.lastTriggerKeyboard();
+        let lastPressKeyboardTime = lastTriggerKeyboard();
         let timepassed = (new Date().getTime() - lastPressKeyboardTime) / 1000;
         return timepassed < 15;
     }
@@ -249,11 +249,11 @@ class Character extends MovableObject {
     gameOverAnimation() {
         this.playAnimation(this.IMAGES_DEAD);
         setTimeout(() => {
-            this.world.showEndscreen();
+            showEndscreen();
             this.applyGravity();
             this.gameoverSound.play();
             this.pepe_snoring.pause();
-            pauseBackgroundMusic();
+            pauseBackgroundMusic(); 
         }, 1000);
     }
 
@@ -271,6 +271,7 @@ class Character extends MovableObject {
      * @param {boolean} boolean - True to mute the sounds, false to unmute.
      */
     characterSound(boolean) {
+        this.character_hurt_sound.muted = boolean;
         this.pepe_snoring.muted = boolean;
         this.jumpSound.muted = boolean;
         this.runSound.muted = boolean;
@@ -294,4 +295,48 @@ class Character extends MovableObject {
     setHurt(isHurt) {
         this.isHurtFlag = isHurt;
     }
+
+    /**
+    * Temporarily sets the character to a hurt state.
+    * 
+    * This function sets the character's hurt status to true, indicating that the
+    * character is currently hurt. After a delay of 1 second (1000 milliseconds),
+    * it resets the hurt status back to false, indicating that the character has
+    * recovered from being hurt.
+    */
+    characterCurrentlyHurt() {
+        this.setHurt(true);
+        setTimeout(() => {
+            this.setHurt(false);
+        }, 1000);
+    }
+    
+    /**
+     * Handles the character being hit by an enemy.
+     * @param {Enemy} enemy - The enemy causing the hit.
+     */
+    characterHit(worthDamaging) {
+        let now = new Date().getTime();
+
+        if (this.characterHitTime(now)) {
+            this.lastHitTime = now;
+            this.character_hurt_sound.play();
+            this.hit(worthDamaging);
+            this.world.statusbarHealth.setPercentage(this.energy);
+            this.characterCurrentlyHurt();
+        }
+    }
+
+    /**
+     * Checks if the endboss should be visible and animates it if necessary.
+     */
+        isEndbossVisible() {
+            let intervalIsEndbossVisible = setInterval( () => {    
+                if(this.x > 2050) {
+                    this.world.level.enemies[0].animate();
+                    this.world.checkBottlesAvailable();
+                    clearInterval(intervalIsEndbossVisible);
+                }
+            }, 100);          
+        }
 }

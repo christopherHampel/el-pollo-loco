@@ -61,7 +61,6 @@ class Endboss extends MovableObject {
     ];
 
     endbossAttack = false;
-    // killed = true;
     counterForPlayAnimation = 0;
     runsAlertArray = this.IMAGES_ALERT.length * 1;
     kikeriki = new Audio('audio/kikeriki.mp3');
@@ -115,7 +114,7 @@ class Endboss extends MovableObject {
     moveLeftEndboss() {
         setInterval( () => {
             if(this.counterForPlayAnimation == this.runsAlertArray) {
-                this.moveLeft(0.5);
+                this.moveLeft(0.8);
             }
         }, 1000 / 60);
     }
@@ -129,9 +128,9 @@ class Endboss extends MovableObject {
             this.applyGravity();
         }, 1000);
         setTimeout( () => {
-            this.world.showEndscreen();
+            showEndscreen();
+            pauseBackgroundMusic(); 
             this.game_win_sound.play();
-            pauseBackgroundMusic();
         }, 2000);
     }
 
@@ -156,5 +155,33 @@ class Endboss extends MovableObject {
         setTimeout(() => {
             this.endbossAttack = false;
         }, this.IMAGES_ATTACK.length * 200);
+    }
+
+    /**
+    * Checks for collisions between the character and enemies.
+    * Applies different collision logic based on the index of the enemy.
+    */
+    checkCollisionsEnemies() {
+        for (let i = 0; i < this.world.level.enemies.length; i++) {
+            let enemy = this.world.level.enemies[i];
+            
+            if(i === 0) {
+                this.collisionWithEndboss(enemy)
+            } else {
+                this.world.collisionWithNormalChicken(enemy)
+            }
+        }
+    }
+
+        /**
+     * Handles collisions between the character and the endboss.
+     * If the character is colliding with the endboss, is not above ground, and the endboss is not killed,
+     * the character receives damage.
+     * @param {Object} enemy - The enemy object (in this case, the endboss) to check collision with.
+     */
+    collisionWithEndboss(enemy) {
+        if(this.world.character.isColliding(enemy) && !this.world.character.isAboveGround() && !enemy.killed){
+            this.world.character.characterHit(50);
+        }
     }
 }

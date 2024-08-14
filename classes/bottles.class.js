@@ -19,19 +19,34 @@ class Bottles extends MovableObject {
         'img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
     ];
 
+    tooltip = null;
+    showTooltip = false;
+
         /**
      * Creates an instance of Bottles.
      */
-    constructor() {
+    constructor() {        
         super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
         this.loadImages(this.IMAGES_BOTTLES);
 
         this.y = 360 - Math.random() * 200;
-        this.x = 200 + Math.random() * 1800;
+        this.x = 250 + Math.random() * 1800;
 
         this.speed = 0.15 + Math.random() * 0.5;
 
         this.animate();
+    }
+
+    /**
+     * Removes the tooltip.
+     */
+    removeTooltip() {
+        this.showTooltip = false;
+    }
+
+    setTooltip(text) {
+        this.tooltip = text;
+        this.showTooltip = true;
     }
 
     /**

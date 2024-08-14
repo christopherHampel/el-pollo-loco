@@ -26,35 +26,12 @@ function htmlStartScreen() {
         </div>`
 }
 
-// function htmlCanvasMobile() {
-//     return `
-//     <div id="canvasMobile" class="canvas-mobile">
-//         <canvas id="canvas" width="720" height="480" id="canvas"></canvas>
-//         <div id="mobile" class="mobile">
-//             <div class="mobile-steering">
-//                 <div id="moveLeft" class="mobile-button">left</div>
-//                 <div id="moveRight" class="mobile-button">right</div>
-//             </div>
-//             <div class="mobile-steering">
-//                 <div id="jump" class="mobile-button">jump</div>
-//                 <div id="throw" class="mobile-button">throw</div>
-//             </div>
-//         </div>
-//     </div>`
-// }
-
-// function htmlTurnYourDevice() {
-//     return `
-//     <div class="turn-device">
-//         <img class="image-turn-device" src="img/settings/mobile-landscape-mode-icon.png">
-//     </div>`
-// }
-
 function htmlWinScreen() {
     return `
     <div class="win-screen">
         <div class="button-container-endscreen">
-            <button onclick="showStartscreen()" class="start-button">Menu</button>
+            <button onclick="backToMenu()" class="start-button">Menu</button>
+            <button onclick="restartGame()" class="start-button">Restart</button>
         </div>
     </div>`
 }
@@ -63,7 +40,8 @@ function htmlGameOver() {
     return `
     <div class="gameover-screen">
         <div class="button-container-endscreen">
-            <button onclick="showStartscreen()" class="start-button">Menu</button>
+            <button onclick="backToMenu()" class="start-button">Menu</button>
+            <button onclick="restartGame()" class="start-button">Restart</button>
         </div>
     </div>`
 }

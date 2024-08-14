@@ -17,6 +17,7 @@ class World {
     gameOver = false;
     throwableObjects = [new TrowableObject()];
     lastThrowTime = 0;
+    tooltipDisplayed = false;
 
     collect_coin_sound = new Audio('audio/collect_coin.mp3');
     collect_bottle_sound = new Audio('audio/collect_bottle_sound.mp3');
@@ -34,7 +35,7 @@ class World {
         this.setWorld();
         this.run();
         this.addNewCloud();
-        this.isEndbossVisible();
+        this.character.isEndbossVisible();
         this.addNewSmallChicken();
     }
 
@@ -52,53 +53,12 @@ class World {
      */
     run() {
         setInterval( () => {
-            this.checkCollisionsEnemies();
+            this.endboss.checkCollisionsEnemies();
             this.collectedBottles();
             this.collectedItems(this.level.coins, this.statusbarCoins.collectedCoins);
             this.checkThrowObjects(); 
-            this.lastTriggerKeyboard();
+            lastTriggerKeyboard();
         }, 100);
-    }
-
-    /**
-     * Checks if the endboss should be visible and animates it if necessary.
-     */
-    isEndbossVisible() {
-        let intervalIsEndbossVisible = setInterval( () => {    
-            if(this.character.x > 2050) {
-                this.level.enemies[0].animate();
-                this.checkBottlesAvailable();
-                clearInterval(intervalIsEndbossVisible);
-            }
-        }, 100);          
-    }
-
-    /**
-    * Checks for collisions between the character and enemies.
-    * Applies different collision logic based on the index of the enemy.
-    */
-    checkCollisionsEnemies() {
-        for (let i = 0; i < this.level.enemies.length; i++) {
-            let enemy = this.level.enemies[i];
-            
-            if(i === 0) {
-                this.collisionWithEndboss(enemy)
-            } else {
-                this.collisionWithNormalChicken(enemy)
-            }
-        }
-    }
-
-    /**
-     * Handles collisions between the character and the endboss.
-     * If the character is colliding with the endboss, is not above ground, and the endboss is not killed,
-     * the character receives damage.
-     * @param {Object} enemy - The enemy object (in this case, the endboss) to check collision with.
-     */
-    collisionWithEndboss(enemy) {
-        if(this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.killed){
-            this.characterHit(50);
-        }
     }
 
     /**
@@ -110,33 +70,12 @@ class World {
     */
     collisionWithNormalChicken(enemy) {
         if(this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.killed){
-            this.characterHit(18);
-        } else if(this.character.isColliding(enemy) && !enemy.killed && this.character.isAboveGround() && !this.character.isHurt()) {
+            this.character.characterHit(18);
+        } else if(this.character.isColliding(enemy) && !enemy.killed && this.character.speedY > 0) {
+            this.character.characterHit(18);
+        } else if(this.character.isColliding(enemy) && !enemy.killed && this.character.isAboveGround() && !this.character.isHurt() && this.character.speedY < 0) {
             this.killChickenFromTop(enemy);
         }
-    }
-
-    /**
-     * Handles the character being hit by an enemy.
-     * @param {Enemy} enemy - The enemy causing the hit.
-     */
-    characterHit(worthDamaging) {
-        let now = new Date().getTime();
-
-        if (this.character.characterHitTime(now)) {
-            this.character.lastHitTime = now;
-            this.character.character_hurt_sound.play();
-            this.character.hit(worthDamaging);
-            this.statusbarHealth.setPercentage(this.character.energy);
-            this.characterCurrentlyHurt();
-        }
-    }
-
-    characterCurrentlyHurt() {
-        this.character.setHurt(true);
-        setTimeout(() => {
-            this.character.setHurt(false);
-        }, 1000);
     }
 
     /**
@@ -173,19 +112,63 @@ class World {
     }
 
     /**
-     * Handles the last triggered keyboard input.
-     * @returns {number} The last pressed keyboard key code.
+    * Checks for collisions between the character and bottles.
+    * If the character collides with a bottle, it processes the collision 
+    * based on whether the character has collected coins or not.
+    */
+    collectedBottles() {
+        this.level.bottles.forEach((bottle) => {
+            if (this.character.isColliding(bottle)) {
+                this.characterisCollidingWithBottle(bottle);
+            }
+        });
+    }
+    /**
+     * Handles the collision between the character and a bottle.
+     * If the character has collected coins, the bottle is processed as a collectible item.
+     * If no coins are collected and the tooltip is not already displayed, 
+     * a tooltip is shown for the bottle.
+     * 
+     * @param {Bottles} bottle - The bottle that the character is colliding with.
      */
-    lastTriggerKeyboard(){
-        return lastPressKeyboard;
+    characterisCollidingWithBottle(bottle) {
+        if (this.statusbarCoins.collectedCoins > 0) {
+            this.collectedItems(this.level.bottles, this.statusbarBottles.collectedBottles);
+        } else if (!this.tooltipDisplayed) {
+            this.showNoticeCoinForBottle(bottle);
+        }
+    }
+    
+    /**
+    * Displays a tooltip message on the bottle indicating that a coin is required to collect it.
+    * Sets a flag to prevent multiple tooltips from being displayed simultaneously.
+    * Removes the tooltip from the bottle after a specified duration.
+    * 
+    * @param {Bottles} bottle - The bottle for which the tooltip message will be shown.
+    */
+    showNoticeCoinForBottle(bottle) {
+        bottle.setTooltip("Zum einsammeln brauchst du einen Coin!");
+        this.tooltipDisplayed = true;
+        setTimeout(() => {
+            bottle.removeTooltip();
+        }, 3000);
     }
 
     /**
-     * Checks and processes collected bottles and coins.
-     */
-    collectedBottles() {
-        if(this.statusbarCoins.collectedCoins > 0) {
-            this.collectedItems(this.level.bottles, this.statusbarBottles.collectedBottles);
+    * Draws the tooltip for the specified bottle on the canvas.
+    * If the bottle's tooltip is set and the tooltip is marked to be shown,
+    * the tooltip message is rendered at the bottle's position on the canvas.
+    * 
+    * @param {Bottles} bottle - The bottle object that has a tooltip to be drawn.
+    */
+    drawTooltip(bottle) {
+        if (bottle.showTooltip && bottle.tooltip) {
+            this.ctx.save();
+            this.ctx.font = "18px Bona Nova SC";
+            this.ctx.fillStyle = "white";
+            this.ctx.font = "bold";
+            this.ctx.fillText(bottle.tooltip, bottle.x, bottle.y);
+            this.ctx.restore();
         }
     }
 
@@ -323,21 +306,14 @@ class World {
             this.level.enemies.push(newSmallChicken);
             newSmallChicken.movableObjectsSound(isMuted);
             this.level.enemies[0].endbossAttack = true;
-        }, 8000);
-    }
-
-    /**
-     * Clears the canvas.
-     */
-    clearRectCanvas() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }, 4000);
     }
 
     /**
      * Draws all game objects onto the canvas.
      */
     draw() {
-        this.clearRectCanvas();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
 
@@ -348,6 +324,7 @@ class World {
             this.addObjectsToMap(this.level.enemies);
             this.addObjectsToMap(this.level.coins);
             this.addObjectsToMap(this.level.bottles);
+            this.level.bottles.forEach((bottle) => this.drawTooltip(bottle));
             this.addToMap(this.character);
             this.addObjectsToMap(this.throwableObjects);
         }
@@ -392,8 +369,6 @@ class World {
         }
 
         this.ctx.restore();  // Stelle den gespeicherten Zustand des Canvas wieder her
-        // movableObject.drawRect(this.ctx);
-        // movableObject.drawRectOffset(this.ctx);
     }
 
     /**
@@ -417,47 +392,4 @@ class World {
             movableObject.width, movableObject.height
         );
     }
-
-    /**
-     * Determines if the character is still alive.
-     * @returns {boolean} True if the character is alive, otherwise false.
-     */
-    isCharacterDead() {
-        return this.character.energy > 0;
-    }
-
-    /**
-     * Clears all intervals.
-     */
-    clearAllIntervals() {
-        for (let i = 1; i < 9999; i++) window.clearInterval(i);
-    }
-
-    /**
-     * Displays the end screen when the game is over.
-     */
-    showEndscreen() {
-        let canvasOverlay = document.getElementById('canvasOverlay');
-        let mobileSteeringBackground = document.getElementById('mobileSteeringBackground');
-
-        this.gameOver = true;
-        this.clearAllIntervals();
-
-        canvasOverlay.classList.remove('vs-hidden');
-        mobileSteeringBackground.classList.add('visibility-hidden');
-
-        this.showWinOrLostScreen(canvasOverlay)
-    }
-
-        /**
-     * Displays the win or game over screen based on the character's status.
-    * @param {HTMLElement} canvasOverlay - The canvas overlay element to display the screen.
-    */
-        showWinOrLostScreen(canvasOverlay) {
-            if (this.isCharacterDead()) {
-               canvasOverlay.innerHTML = htmlWinScreen();
-            } else {
-               canvasOverlay.innerHTML = htmlGameOver();
-            }
-        }
 }

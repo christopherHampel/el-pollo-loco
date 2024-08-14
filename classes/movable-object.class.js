@@ -19,7 +19,6 @@ class MovableObject extends DrawableObject {
 
     chicken_scream_audio = new Audio('audio/chicken-noise.mp3');
 
-
     /**
      * Applies gravity to the object, modifying its vertical position and speed.
      */

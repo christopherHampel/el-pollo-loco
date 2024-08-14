@@ -10,7 +10,6 @@ document.addEventListener("keydown", (e) => {
         keyboard.DOWN = true;
     } else if(e.keyCode == 32) {
         keyboard.SPACE = true;
-        // console.log('Space')
     } else if(e.key === 'd') {
         keyboard.D = true;
     }

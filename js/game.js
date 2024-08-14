@@ -47,6 +47,27 @@ function deleteStartScreen() {
 }
 
 /**
+ * Handles the transition back to the main menu from the game over screen.
+ * This function pauses any ongoing game sounds and displays the start screen.
+ * 
+ * It pauses the game over sound associated with the character and the victory sound
+ * associated with the endboss. Then it calls the function to show the start screen,
+ * allowing the player to begin a new game or navigate to the main menu.
+ */
+function backToMenu() {
+    isMuted = false;
+    world.character.gameoverSound.pause();
+    world.endboss.game_win_sound.pause();
+    unMuteGame();
+    showStartscreen();
+}
+
+function restartGame() {
+    backToMenu();
+    init();
+}
+
+/**
  * Displays the start screen by changing the visibility of overlays and the canvas element.
  * Fills the overlay with HTML content for the start screen.
  */
@@ -96,9 +117,11 @@ function sounds() {
     let muteIcon = document.getElementById('mute');
 
     if (isMuted) {
-        muteGame(muteIcon);
+        muteIcon.src = 'img/icons/volume-silent-line-icon.png';
+        muteGame();
     } else {
-        unMuteGame(muteIcon);
+        muteIcon.src = 'img/icons/volume-full-line-icon.png';
+        unMuteGame();
     }
     isMuted = !isMuted;
 }
@@ -107,11 +130,11 @@ function sounds() {
  * Mutes the game sounds and updates the mute icon.
  * @param {HTMLImageElement} muteIcon - The mute icon element.
  */
-function muteGame(muteIcon) {
-    muteIcon.src = 'img/icons/volume-silent-line-icon.png';
+function muteGame() {
     backgroundMusic.muted = false;
     world.character.characterSound(false);
     world.level.enemies[0].kikeriki.muted = false;
+    world.endboss.game_win_sound.muted = false;
     enemiesSound(false);
     itemsSound(false);
 }
@@ -120,11 +143,11 @@ function muteGame(muteIcon) {
  * Unmutes the game sounds and updates the mute icon.
  * @param {HTMLImageElement} muteIcon - The mute icon element.
  */
-function unMuteGame(muteIcon) {
-    muteIcon.src = 'img/icons/volume-full-line-icon.png';
+function unMuteGame() {
     backgroundMusic.muted = true;
     world.character.characterSound(true);
     world.level.enemies[0].kikeriki.muted = true;
+    world.endboss.game_win_sound.muted = true;
     enemiesSound(true);
     itemsSound(true);
 }
@@ -147,3 +170,53 @@ function itemsSound(boolean) {
     world.collect_coin_sound.muted = boolean;
     world.collect_bottle_sound.muted = boolean;
 };
+
+/**
+ * Displays the end screen when the game is over.
+ */
+function showEndscreen() {
+    let canvasOverlay = document.getElementById('canvasOverlay');
+    let mobileSteeringBackground = document.getElementById('mobileSteeringBackground');
+
+    world.gameOver = true;
+    clearAllIntervals();
+
+    canvasOverlay.classList.remove('vs-hidden');
+    mobileSteeringBackground.classList.add('visibility-hidden');
+
+    showWinOrLostScreen(canvasOverlay);
+}
+    
+/**
+ * Displays the win or game over screen based on the character's status.
+* @param {HTMLElement} canvasOverlay - The canvas overlay element to display the screen.
+*/
+function showWinOrLostScreen(canvasOverlay) {
+    if(isCharacterDead()) {
+       canvasOverlay.innerHTML = htmlWinScreen();
+    } else {
+       canvasOverlay.innerHTML = htmlGameOver();
+    }
+}
+
+/**
+* Handles the last triggered keyboard input.
+* @returns {number} The last pressed keyboard key code.
+*/
+function lastTriggerKeyboard(){
+    return lastPressKeyboard;
+}
+/**
+ * Clears all intervals.
+ */
+function clearAllIntervals() {
+    for (let i = 1; i < 9999; i++) window.clearInterval(i);
+}
+    
+/**
+ * Determines if the character is still alive.
+ * @returns {boolean} True if the character is alive, otherwise false.
+ */
+function isCharacterDead() {
+    return world.character.energy > 0;
+}

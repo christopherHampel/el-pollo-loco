@@ -1,6 +1,5 @@
 function activateMobileSteering() {
     let userAgent = navigator.userAgent.toLowerCase();
-    let muteButton = document.getElementById('mute');
     let canvasOverlay = document.getElementById('canvasOverlay');
     canvasOverlay.innerHTML = '';
 
